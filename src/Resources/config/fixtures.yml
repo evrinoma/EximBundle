@@ -1,0 +1,6 @@
+services:
+  evrinoma.exim.fixtures.search_settings:
+    class: Evrinoma\EximBundle\Fixtures\SearchSettingsFixtures
+    tags:
+      - { name: doctrine.fixture.orm }
+

@@ -1,0 +1,3 @@
+exim_api:
+  resource: "@EvrinomaEximBundle/Controller/EximApiController.php"
+  type: annotation

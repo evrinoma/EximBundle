@@ -1,0 +1,8 @@
+exim:
+  resource: "@EvrinomaEximBundle/Resources/config/routing/default.yml"
+  prefix: evrinoma
+
+eximapi:
+  resource: "@EvrinomaEximBundle/Resources/config/routing/api.yml"
+  prefix: evrinoma
+

@@ -1,0 +1,130 @@
+services:
+  evrinoma.exim.controller:
+    class: Evrinoma\EximBundle\Controller\EximController
+    autowire: true
+
+  Evrinoma\EximBundle\Controller\EximController:
+    alias: evrinoma.exim.controller
+    public: true
+    deprecated:
+
+  evrinoma.exim.api.controller:
+    class: Evrinoma\EximBundle\Controller\EximApiController
+    arguments:
+      - '@jms_serializer'
+      - '@request_stack'
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.exim.acl.manager'
+      - '@evrinoma.exim.domain.manager'
+      - '@evrinoma.exim.server.manager'
+      - '@evrinoma.exim.spam.manager'
+      - '@evrinoma.exim.search.manager'
+
+  Evrinoma\EximBundle\Controller\EximApiController:
+    alias: evrinoma.exim.api.controller
+    public: true
+    deprecated:
+
+  evrinoma.exim.spam.manager:
+    class: Evrinoma\EximBundle\Manager\SpamManager
+    arguments:
+      - '@doctrine.orm.entity_manager'
+
+  evrinoma.exim.server.manager:
+    class: Evrinoma\EximBundle\Manager\ServerManager
+    arguments:
+      - '@doctrine.orm.entity_manager'
+
+  evrinoma.exim.search.manager:
+    class: Evrinoma\EximBundle\Manager\SearchManager
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@evrinoma.exim.search.shell'
+      - '@evrinoma.settings.manager'
+
+  evrinoma.exim.domain.manager:
+    class: Evrinoma\EximBundle\Manager\DomainManager
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@evrinoma.exim.server.manager'
+
+  evrinoma.exim.acl.manager:
+    class: Evrinoma\EximBundle\Manager\AclManager
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@evrinoma.exim.domain.manager'
+
+  evrinoma.exim.search.shell:
+    class: Evrinoma\EximBundle\Shell\SearchShell
+
+  Evrinoma\EximBundle\Manager\SpamManager:
+    alias: evrinoma.exim.spam.manager
+    public: true
+    deprecated:
+
+  Evrinoma\EximBundle\Manager\ServerManager:
+    alias: evrinoma.exim.server.manager
+    public: true
+    deprecated:
+
+  Evrinoma\EximBundle\Shell\SearchShell:
+    alias: evrinoma.exim.search.shell
+    public: true
+    deprecated:
+
+  Evrinoma\EximBundle\Manager\SearchManager:
+    alias: evrinoma.exim.search.manager
+    public: true
+    deprecated:
+
+  Evrinoma\EximBundle\Manager\DomainManager:
+    alias: evrinoma.exim.domain.manager
+    public: true
+    deprecated:
+
+  Evrinoma\EximBundle\Manager\AclManager:
+    alias: evrinoma.exim.acl.manager
+    public: true
+    deprecated:
+
+  evrinoma.exim.form.rest.conformity:
+    class: Evrinoma\EximBundle\Form\Rest\ConformityType
+    arguments:
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.exim.spam.manager'
+    tags: { - name: form.type }
+
+  evrinoma.exim.form.rest.domain:
+    class: Evrinoma\EximBundle\Form\Rest\DomainType
+    arguments:
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.exim.domain.manager'
+    tags: { - name: form.type }
+
+  evrinoma.exim.form.rest.file_search:
+    class: Evrinoma\EximBundle\Form\Rest\FileSearchType
+    arguments:
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.settings.manager'
+
+    tags: { - name: form.type }
+
+  evrinoma.exim.form.rest.filter:
+    class: Evrinoma\EximBundle\Form\Rest\FilterType
+    arguments:
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.exim.spam.manager'
+    tags: { - name: form.type }
+
+  evrinoma.exim.form.rest.server:
+    class: Evrinoma\EximBundle\Form\Rest\ServerType
+    arguments:
+      - '@evrinoma.dto.factory'
+      - '@evrinoma.exim.server.manager'
+    tags: { - name: form.type }
+
+  evrinoma.exim.form.rest.type_acl:
+    class: Evrinoma\EximBundle\Form\Rest\TypeAclType
+    arguments:
+      - '@evrinoma.exim.acl.manager'
+    tags: { - name: form.type }
