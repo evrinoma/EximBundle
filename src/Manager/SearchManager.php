@@ -120,7 +120,7 @@ final class SearchManager extends AbstractEntityManager implements SearchManager
         foreach ($lines as $number) {
             $run = $this->shellManager->getProgram('sed').' -n \''.$number.','.($number + $this->step).'p;'.($number + $this->step + 1).'q\' '.$file;
             if ($this->shellManager->setClean()->executeProgram($run)) {
-                $message[] = $this->shellManager->getResult();
+                $message[] = $this->shellManager->toUtf8Size();
             }
         }
         if (count($message)) {
