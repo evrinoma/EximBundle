@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
 //region SECTION: Getters/Setters
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('delta8');
+        $treeBuilder = new TreeBuilder('exim');
         $rootNode    = $treeBuilder->getRootNode();
         $rootNode
             ->children()
