@@ -32,6 +32,6 @@ abstract class AbstractEximFixtures extends Fixture implements EximFixtureInterf
 
         $this->create();
 
-       // $this->objectManager->flush();
+        $this->objectManager->flush();
     }
 }

@@ -67,15 +67,15 @@ class SearchSettingsFixtures extends AbstractEximFixtures
         $repository = $this->objectManager->getRepository(Settings::class);
 
         foreach ($this->files as $name => $filePath) {
-                $file = new FileDto();
+            $file = new FileDto();
 
-                $settingFile = new Settings();
-                $settingFile
-                    ->setData($file->setName($name)->setPath($filePath))
-                    ->setType(LogSearchDto::class);
+            $settingFile = new Settings();
+            $settingFile
+                ->setData($file->setName($name)->setPath($filePath))
+                ->setType(LogSearchDto::class);
 
-                $this->objectManager->persist($settingFile);
-            }
+            $this->objectManager->persist($settingFile);
+        }
     }
 
 //region SECTION: Getters/Setters
