@@ -131,11 +131,11 @@ class SpamDto extends AbstractDto
     }
 
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function lookingForRequest()
     {
-        return null;
+        return DtoInterface::DEFAULT_LOOKING_REQUEST;
     }
 //endregion Public
 

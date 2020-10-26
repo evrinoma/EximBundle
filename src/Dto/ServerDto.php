@@ -106,7 +106,7 @@ class ServerDto extends AbstractDto
     }
 
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function lookingForRequest()
     {

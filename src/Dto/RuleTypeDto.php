@@ -65,7 +65,7 @@ class RuleTypeDto extends AbstractDto
 
 //region SECTION: Getters/Setters
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function lookingForRequest()
     {

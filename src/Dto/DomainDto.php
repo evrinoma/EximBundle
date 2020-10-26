@@ -140,7 +140,7 @@ class DomainDto extends AbstractDto implements VuetableInterface
     }
 
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function lookingForRequest()
     {
