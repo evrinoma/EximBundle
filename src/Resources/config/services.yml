@@ -19,6 +19,7 @@ services:
       - '@evrinoma.exim.server.manager'
       - '@evrinoma.exim.spam.manager'
       - '@evrinoma.exim.search.manager'
+    autowire: true
 
   Evrinoma\EximBundle\Controller\EximApiController:
     alias: evrinoma.exim.api.controller
