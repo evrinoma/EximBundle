@@ -78,6 +78,7 @@ class LogSearchDto extends AbstractDto
         if ($searchFile) {
             $this->setSearchFile($searchFile);
         }
+
         return $this;
     }
 

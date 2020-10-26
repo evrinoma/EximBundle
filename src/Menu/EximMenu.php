@@ -6,7 +6,7 @@ namespace Evrinoma\EximBundle\Menu;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Evrinoma\MenuBundle\Entity\MenuItem;
-use Evrinoma\MenuBundle\Manager\MenuInterface;
+use Evrinoma\MenuBundle\Menu\MenuInterface;
 use Evrinoma\UtilsBundle\Voter\RoleInterface;
 
 /**
@@ -17,13 +17,14 @@ use Evrinoma\UtilsBundle\Voter\RoleInterface;
 final class EximMenu implements MenuInterface
 {
 
-    public function createMenu(EntityManagerInterface $em): void
+    public function create(EntityManagerInterface $em): void
     {
         $mailSearch = new MenuItem();
         $mailSearch
             ->setRole([RoleInterface::ROLE_SUPER_ADMIN])
             ->setName('Log Search')
-            ->setRoute('mail_search');
+            ->setRoute('mail_search')
+            ->setTag($this->tag());
 
         $em->persist($mailSearch);
 
@@ -31,7 +32,8 @@ final class EximMenu implements MenuInterface
         $mailDomain
             ->setRole([RoleInterface::ROLE_SUPER_ADMIN])
             ->setName('Edit Domain')
-            ->setRoute('mail_domain');
+            ->setRoute('mail_domain')
+            ->setTag($this->tag());
 
         $em->persist($mailDomain);
 
@@ -39,7 +41,8 @@ final class EximMenu implements MenuInterface
         $mailAcl
             ->setRole([RoleInterface::ROLE_SUPER_ADMIN])
             ->setName('Edit ACL')
-            ->setRoute('mail_acl');
+            ->setRoute('mail_acl')
+            ->setTag($this->tag());
 
         $em->persist($mailAcl);
 
@@ -50,7 +53,8 @@ final class EximMenu implements MenuInterface
             ->setUri('#')
             ->addChild($mailSearch)
             ->addChild($mailDomain)
-            ->addChild($mailAcl);
+            ->addChild($mailAcl)
+            ->setTag($this->tag());
 
         $em->persist($mail);
     }
@@ -58,5 +62,10 @@ final class EximMenu implements MenuInterface
     public function order(): int
     {
         return 15;
+    }
+
+    public function tag(): string
+    {
+        return MenuInterface::DEFAULT_TAG;
     }
 }
