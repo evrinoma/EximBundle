@@ -6,7 +6,6 @@ services:
   Evrinoma\EximBundle\Controller\EximController:
     alias: evrinoma.exim.controller
     public: true
-    deprecated:
 
   evrinoma.exim.api.controller:
     class: Evrinoma\EximBundle\Controller\EximApiController
@@ -24,7 +23,6 @@ services:
   Evrinoma\EximBundle\Controller\EximApiController:
     alias: evrinoma.exim.api.controller
     public: true
-    deprecated:
 
   evrinoma.exim.spam.manager:
     class: Evrinoma\EximBundle\Manager\SpamManager
@@ -61,32 +59,26 @@ services:
   Evrinoma\EximBundle\Manager\SpamManager:
     alias: evrinoma.exim.spam.manager
     public: true
-    deprecated:
 
   Evrinoma\EximBundle\Manager\ServerManager:
     alias: evrinoma.exim.server.manager
     public: true
-    deprecated:
 
   Evrinoma\EximBundle\Shell\SearchShell:
     alias: evrinoma.exim.search.shell
     public: true
-    deprecated:
 
   Evrinoma\EximBundle\Manager\SearchManager:
     alias: evrinoma.exim.search.manager
     public: true
-    deprecated:
 
   Evrinoma\EximBundle\Manager\DomainManager:
     alias: evrinoma.exim.domain.manager
     public: true
-    deprecated:
 
   Evrinoma\EximBundle\Manager\AclManager:
     alias: evrinoma.exim.acl.manager
     public: true
-    deprecated:
 
   evrinoma.exim.form.rest.conformity:
     class: Evrinoma\EximBundle\Form\Rest\ConformityType
