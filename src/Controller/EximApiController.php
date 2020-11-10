@@ -170,7 +170,7 @@ final class EximApiController extends AbstractApiController
      *     description="black or white",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\TypeAclType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\TypeAclType::class)
      *     )
      * )
      * @SWG\Parameter(
@@ -180,7 +180,7 @@ final class EximApiController extends AbstractApiController
      *     description="select domain",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\DomainType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\DomainType::class)
      *     )
      * )
      * @SWG\Response(response=200,description="Returns nothing")
@@ -299,7 +299,7 @@ final class EximApiController extends AbstractApiController
      *     description="This is a parameter",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
      *     )
      * )
      * @SWG\Parameter(
@@ -347,7 +347,7 @@ final class EximApiController extends AbstractApiController
      *     description="search there",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\FileSearchType::class, options={"rest_class_entity":"Evrinoma\EximBundle\Dto\LogSearchDto"})
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FileSearchType::class, options={"rest_class_entity":"Evrinoma\EximBundle\Dto\LogSearchDto"})
      *     )
      * )
      * @SWG\Response(response=200,description="Returns nothing")
@@ -454,7 +454,7 @@ final class EximApiController extends AbstractApiController
      *     description="This is a parameter",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
      *     )
      * )
      * @SWG\Response(response=200,description="Returns nothing")
@@ -527,7 +527,7 @@ final class EximApiController extends AbstractApiController
      *     description="select spam filter type",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
      *     )
      * )
      * @SWG\Parameter(
@@ -537,7 +537,7 @@ final class EximApiController extends AbstractApiController
      *     description="select spam conformity type",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
      *     )
      * )
      *
@@ -601,7 +601,7 @@ final class EximApiController extends AbstractApiController
      *     description="select spam filter type",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
      *     )
      * )
      * @SWG\Parameter(
@@ -611,7 +611,7 @@ final class EximApiController extends AbstractApiController
      *     description="select spam conformity type",
      *     items=@SWG\Items(
      *         type="string",
-     *         @Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
+     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
      *     )
      * )
      * @SWG\Response(response=400,description="set ip and name domain")
