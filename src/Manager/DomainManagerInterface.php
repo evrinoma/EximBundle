@@ -6,7 +6,7 @@ namespace Evrinoma\EximBundle\Manager;
 use Evrinoma\EximBundle\Dto\DomainDto;
 use Evrinoma\EximBundle\Entity\Domain;
 use Evrinoma\EximBundle\Vuetable\VuetableInterface;
-use Evrinoma\UtilsBundle\Manager\BaseEntityInterface;
+use Evrinoma\UtilsBundle\Manager\EntityInterface;
 use Evrinoma\UtilsBundle\Rest\RestInterface;
 
 /**
@@ -14,7 +14,7 @@ use Evrinoma\UtilsBundle\Rest\RestInterface;
  *
  * @package Evrinoma\EximBundle\Manager
  */
-interface DomainManagerInterface extends RestInterface, BaseEntityInterface
+interface DomainManagerInterface extends RestInterface, EntityInterface
 {
 
 //region SECTION: Public

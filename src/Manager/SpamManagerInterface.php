@@ -4,7 +4,7 @@
 namespace Evrinoma\EximBundle\Manager;
 
 use Evrinoma\EximBundle\Dto\SpamDto;
-use Evrinoma\UtilsBundle\Manager\BaseEntityInterface;
+use Evrinoma\UtilsBundle\Manager\EntityInterface;
 use Evrinoma\UtilsBundle\Rest\RestInterface;
 
 /**
@@ -12,7 +12,7 @@ use Evrinoma\UtilsBundle\Rest\RestInterface;
  *
  * @package Evrinoma\EximBundle\Manager
  */
-interface SpamManagerInterface extends RestInterface, BaseEntityInterface
+interface SpamManagerInterface extends RestInterface, EntityInterface
 {
 //region SECTION: Public
     public function toSave(SpamDto $spamDto);

@@ -4,7 +4,7 @@
 namespace Evrinoma\EximBundle\Vuetable;
 
 
-use Evrinoma\UtilsBundle\Manager\BaseEntityInterface;
+use Evrinoma\UtilsBundle\Manager\EntityInterface;
 
 class AdaptorVuetable
 {
@@ -22,7 +22,7 @@ class AdaptorVuetable
      * @param $dto
      * @param $data
      */
-    public function __construct(BaseEntityInterface $manager, VuetableInterface $dto, $data)
+    public function __construct(EntityInterface $manager, VuetableInterface $dto, $data)
     {
          $this->manager = $manager;
          $this->dto = $dto;
