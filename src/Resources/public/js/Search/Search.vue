@@ -100,6 +100,7 @@
                 showPreloadSettings: false,
                 searchText: '',
                 searchQueryText: '',
+                encodeSearchQueryText: '',
                 tabs: [],
                 settings: {},
                 classEntity: '',
@@ -149,8 +150,11 @@
                     });
                 }
             },
+            _encodeSearchQuery() {
+                this.encodeSearchQueryText = encodeURI(this.searchQueryText);
+            },
             _highlight(string) {
-                return decodeURI(encodeURI(string).replace(this.searchQueryText, '<span class="ui teal label">' + this.searchQueryText + '</span>'));
+                return decodeURI(encodeURI(string).replace(this.encodeSearchQueryText, '<span class="ui teal label">' + this.encodeSearchQueryText + '</span>'));
                 //"<span class="ui teal label"><i class=\"large man icon\"></i>Male</span>"
             },
             _setSettings(response) {
@@ -191,6 +195,7 @@
                 this.tabs = [];
                 this.tabSelected = '';
                 this.searchQueryText = this.searchText;
+                this._encodeSearchQuery();
                 let self = this;
                 this.settings.some(function (value) {
                     value.items.some(function (item) {

@@ -92,7 +92,7 @@ final class SearchManager extends AbstractEntityManager implements SearchManager
                 if ($this->dto->hasFile($fileDto->getName())) {
                     $file = $fileDto->getFilePath();
                     $run  = $this->shellManager->getProgram('cat').' '.escapeshellarg($file).' | '.
-                        $this->shellManager->getProgram('grep').' -ni \''.escapeshellarg($this->dto->getSearchString()).'\' | '.
+                        $this->shellManager->getProgram('grep').' -ni '.escapeshellarg($this->dto->getSearchString()).' | '.
                         $this->shellManager->getProgram('sed').' -n \'s/^\\([0-9]*\\)[:].*/\\1/p\'';
                     if ($this->shellManager->setClean()->executeProgram($run)) {
                         $this->getLineMeet($this->shellManager->getResult(), $file, $fileDto->getName());
