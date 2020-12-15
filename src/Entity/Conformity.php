@@ -6,6 +6,7 @@ namespace Evrinoma\EximBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Entity\IdTrait;
 
 /**
  * Class Conformity
@@ -16,8 +17,7 @@ use Evrinoma\UtilsBundle\Entity\ActiveTrait;
  */
 class Conformity
 {
-    use ClassEntityTrait;
-    use ActiveTrait;
+    use IdTrait, ClassEntityTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -27,7 +27,7 @@ class Conformity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string|null
@@ -38,14 +38,6 @@ class Conformity
 //endregion Fields
 
 //region SECTION: Getters/Setters
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     /**
      * @return string|null
      */

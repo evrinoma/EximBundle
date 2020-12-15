@@ -6,6 +6,7 @@ namespace Evrinoma\EximBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Entity\IdTrait;
 
 /**
  * Domains
@@ -15,8 +16,7 @@ use Evrinoma\UtilsBundle\Entity\ActiveTrait;
  */
 class Server
 {
-    use ClassEntityTrait;
-    use ActiveTrait;
+    use IdTrait, ClassEntityTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -26,7 +26,7 @@ class Server
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      *
@@ -49,14 +49,6 @@ class Server
     public function getHostname(): ?string
     {
         return $this->hostname;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -90,8 +82,5 @@ class Server
 
         return $this;
     }
-
 //endregion Getters/Setters
-
-
 }

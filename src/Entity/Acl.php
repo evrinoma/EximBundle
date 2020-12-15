@@ -8,6 +8,7 @@ use Evrinoma\EximBundle\Model\AclModel;
 use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\EximBundle\Model\MailTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\VirtualProperty;
@@ -21,9 +22,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  */
 class Acl
 {
-    use ClassEntityTrait;
-    use ActiveTrait;
-    use MailTrait;
+    use ClassEntityTrait, ActiveTrait, MailTrait;
 
 //region SECTION: Fields
     /**
@@ -33,7 +32,7 @@ class Acl
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string

@@ -4,6 +4,7 @@ namespace Evrinoma\EximBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Entity\IdTrait;
 
 /**
  * Class Spam
@@ -14,8 +15,7 @@ use Evrinoma\UtilsBundle\Entity\ActiveTrait;
  */
 class Filter
 {
-    use ClassEntityTrait;
-    use ActiveTrait;
+    use IdTrait, ClassEntityTrait, ActiveTrait;
 
     public const FILTER_BURN = 'burn';
     public const FILTER_IP = 'ip';
@@ -27,7 +27,7 @@ class Filter
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string|null
@@ -72,14 +72,6 @@ class Filter
 //endregion Public
 
 //region SECTION: Getters/Setters
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     /**
      * @return string|null
      */

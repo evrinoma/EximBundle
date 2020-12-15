@@ -5,6 +5,7 @@ namespace Evrinoma\EximBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\VirtualProperty;
@@ -17,8 +18,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  */
 class Domain
 {
-    use ClassEntityTrait;
-    use ActiveTrait;
+    use ClassEntityTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -28,7 +28,7 @@ class Domain
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      *
