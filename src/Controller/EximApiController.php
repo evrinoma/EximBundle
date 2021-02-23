@@ -20,7 +20,7 @@ use Evrinoma\UtilsBundle\Controller\AbstractApiController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use JMS\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -91,12 +91,12 @@ final class EximApiController extends AbstractApiController
         SearchManagerInterface $searchManager
     ) {
         parent::__construct($serializer);
-        $this->request    = $requestStack->getCurrentRequest();
-        $this->factoryDto = $factoryDto;
-        $this->aclManager = $aclManager;
+        $this->request       = $requestStack->getCurrentRequest();
+        $this->factoryDto    = $factoryDto;
+        $this->aclManager    = $aclManager;
         $this->domainManager = $domainManager;
         $this->serverManager = $serverManager;
-        $this->spamManager = $spamManager;
+        $this->spamManager   = $spamManager;
         $this->searchManager = $searchManager;
     }
 //endregion Constructor
@@ -104,14 +104,19 @@ final class EximApiController extends AbstractApiController
 //region SECTION: Public
     /**
      * @Rest\Get("/api/exim/acl/acl", name="api_acl")
-     * @SWG\Get(tags={"acl"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\AclDto[id]",
-     *     in="query",
-     *     type="string",
-     *     description="id record"
+     * @OA\Get(
+     *      tags={"acl"},
+     *      @OA\Parameter(
+     *         description="ID record",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\AclDto[id]",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     )
      * )
-     * @SWG\Response(response=200,description="Returns the acl list")
+     * @OA\Response(response=200,description="Returns the acl list")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -124,8 +129,8 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/acl/class", name="api_acl_class")
-     * @SWG\Get(tags={"acl"})
-     * @SWG\Response(response=200,description="Returns class acl entity")
+     * @OA\Get(tags={"acl"})
+     * @OA\Response(response=200,description="Returns class acl entity")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -137,9 +142,9 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/acl/model", name="api_acl_model")
-     * @SWG\Get(tags={"acl"})
+     * @OA\Get(tags={"acl"})
      *
-     * @SWG\Response(response=200,description="Returns the acl model")
+     * @OA\Response(response=200,description="Returns the acl model")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -150,40 +155,54 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Post("/api/exim/acl/save", name="api_acl_save")
-     * @SWG\Post(tags={"acl"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\AclDto[id]",
-     *     in="query",
-     *     type="string",
-     *     description="id record"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\AclDto[email]",
-     *     in="query",
-     *     type="string",
-     *     description="email or domain record"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\AclDto[type]",
-     *     in="query",
-     *     type="array",
-     *     description="black or white",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\TypeAclType::class)
+     * @OA\Post(
+     *      tags={"acl"},
+     *      @OA\Parameter(
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\AclDto[id]",
+     *         description="ID record",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\AclDto[email]",
+     *         description="email or domain record",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\AclDto[type]",
+     *         in="query",
+     *         description="black or white",
+     *         required=true,
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\TypeAclType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
+     *     @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
+     *         in="query",
+     *         description="select domain",
+     *         required=true,
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\DomainType::class),
+     *              ),
+     *          ),
+     *         style="form"
      *     )
      * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
-     *     in="query",
-     *     type="array",
-     *     description="select domain",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\DomainType::class)
-     *     )
-     * )
-     * @SWG\Response(response=200,description="Returns nothing")
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -197,9 +216,9 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/domain/domain", name="api_domain")
-     * @SWG\Get(tags={"domain"})
+     * @OA\Get(tags={"domain"})
      *
-     * @SWG\Response(response=200,description="Returns the rewards of all generated domains")
+     * @OA\Response(response=200,description="Returns the rewards of all generated domains")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -212,9 +231,9 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/domain/class", name="api_domain_class")
-     * @SWG\Get(tags={"domain"})
+     * @OA\Get(tags={"domain"})
      *
-     * @SWG\Response(response=200,description="Returns the class domain")
+     * @OA\Response(response=200,description="Returns the class domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -226,30 +245,38 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/domain/query", name="api_query_domain")
-     * @SWG\Get(tags={"domain"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[page]",
-     *     in="query",
-     *     type="integer",
-     *     default="1",
-     *     description="page number"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[per_page]",
-     *     in="query",
-     *     type="integer",
-     *     default="0",
-     *     description="per page records"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[filter]",
-     *     in="query",
-     *     type="string",
-     *     default="",
-     *     description="filter by domain or mx"
+     * @OA\Get(
+     *      tags={"domain"},
+     *      @OA\Parameter(
+     *         description="page number",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[page]",
+     *         @OA\Schema(
+     *           type="integer",
+     *           default="1",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="per page records",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[per_page]",
+     *         @OA\Schema(
+     *           type="integer",
+     *           default="0",
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="filter by domain or mx",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[filter]",
+     *         @OA\Schema(
+     *           type="filter by domain or mx",
+     *           default="",
+     *         )
+     *     ),
      * )
      *
-     * @SWG\Response(response=200,description="Returns the rewards of all generated domains")
+     * @OA\Response(response=200,description="Returns the rewards of all generated domains")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -268,15 +295,20 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Delete("/api/exim/domain/delete", name="api_delete_domain")
-     * @SWG\Delete(tags={"domain"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[id]",
-     *     in="query",
-     *     type="string",
-     *     default="-1",
-     *     description="id record"
+     * @OA\Delete(
+     *     tags={"domain"},
+     *     @OA\Parameter(
+     *         description="id record",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[id]",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           default="-1",
+     *         )
+     *     )
      * )
-     * @SWG\Response(response=200,description="Returns nothing")
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -291,31 +323,40 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Post("/api/exim/domain/save", name="api_save_domain")
-     * @SWG\Post(tags={"domain"})
-     * @SWG\Parameter(
-     *  name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
-     *     in="query",
-     *     type="array",
-     *     description="This is a parameter",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
+     * @OA\Post(
+     *     tags={"domain"}),
+     * @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         in="query",
+     *         description="This is a parameter",
+     *         required=true,
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
+     * @OA\Parameter(
+     *         description="Mail name server",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="ite-ng.ru",
+     *         )
      *     )
      * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
-     *     in="query",
-     *     type="string",
-     *     default="ite-ng.ru",
-     *     description="Mail name server"
-     * )
-     * @SWG\Response(response=200,description="Returns the rewards of default generated domain",
-     *     @SWG\Schema(
+     * @OA\Response(response=200,description="Returns the rewards of default generated domain",
+     *     @OA\Schema(
      *        type="object",
      *        example={"domainName": "ite29.ite-ng.ru", "ip": "172.20.1.4"}
      *     )
      * )
-     * @SWG\Response(response=400,description="set ip and name domain")
+     * @OA\Response(response=400,description="set ip and name domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -332,25 +373,35 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/log/search", name="api_log_search")
-     * @SWG\Get(tags={"log"})
-     * @SWG\Parameter(
-     *     name="searchString",
-     *     in="query",
-     *     type="string",
-     *     default="@ite-ng.ru",
-     *     description="search for"
+     * @OA\Get(tags={"log"})
+     * @OA\Parameter(
+     *         description="search for",
+     *         in="query",
+     *         name="searchString",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="@ite-ng.ru",
+     *         )
+     *     ),
+     * @OA\Parameter(
+     *         name="searchFile",
+     *         in="query",
+     *         description="search there",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(
+     *                      type=Evrinoma\EximBundle\Form\Rest\FileSearchType::class,
+     *                      options={"rest_class_entity":"Evrinoma\EximBundle\Dto\LogSearchDto"}
+     *                  ),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="searchFile",
-     *     in="query",
-     *     type="array",
-     *     description="search there",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FileSearchType::class, options={"rest_class_entity":"Evrinoma\EximBundle\Dto\LogSearchDto"})
-     *     )
-     * )
-     * @SWG\Response(response=200,description="Returns nothing")
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -371,9 +422,9 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/log/settings", name="api_log_settings")
-     * @SWG\Get(tags={"log"})
+     * @OA\Get(tags={"log"})
      *
-     * @SWG\Response(response=200,description="Returns nothing")
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -386,25 +437,30 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Post("/api/exim/log/settings/save", name="api_save_settings")
-     * @SWG\Post(tags={"log"})
-     * @SWG\Parameter(
-     * name="body",
-     * in="body",
-     * required=true,
-     *      @SWG\Schema(
-     *          @SWG\Property(
-     *          property="settings",
-     *          type="array",
-     *          @SWG\Items(
-     *              type="object",
-     *              @SWG\Property(property="id", type="string", ),
-     *              @SWG\Property(property="active", type="string",),
-     *              ),
-     *          ),
-     *      ),
-     *  ),
+     * @OA\Post(
+     *      tags={"log"},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               example={"classEntity":"Evrinoma\EximBundle\Dto\LogSearchDto","settings":{{"id":"41","active":"b"},{"id":"42","active":"d"},{"id":"43","active":"a"}}},
+     *               type="object",
+     *               @OA\Property(property="classEntity",type="string"),
+     *               @OA\Property(
+     *                  property="settings",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(property="id",type="string"),
+     *                      @OA\Property(property="active",type="string")
+     *                   )
+     *               )
+     *            )
      *
-     * @SWG\Response(response=200,description="Returns nothing")
+     *         )
+     *     )
+     * )
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -418,8 +474,8 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/server/server", name="api_server")
-     * @SWG\Get(tags={"server"})
-     * @SWG\Response(response=200,description="Returns the rewards of all servers")
+     * @OA\Get(tags={"server"})
+     * @OA\Response(response=200,description="Returns the rewards of all servers")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -433,9 +489,9 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/server/class", name="api_server_class")
-     * @SWG\Get(tags={"server"})
+     * @OA\Get(tags={"server"})
      *
-     * @SWG\Response(response=200,description="Returns the class domain")
+     * @OA\Response(response=200,description="Returns the class domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -446,18 +502,24 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Delete("/api/exim/server/delete", name="api_delete_server")
-     * @SWG\Delete(tags={"server"})
-     * @SWG\Parameter(
-     *  name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
-     *     in="query",
-     *     type="array",
-     *     description="This is a parameter",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class)
+     * @OA\Delete(
+     *     tags={"server"},
+     *     @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         in="query",
+     *         description="This is a parameter",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class),
+     *              ),
+     *          ),
+     *         style="form"
      *     )
-     * )
-     * @SWG\Response(response=200,description="Returns nothing")
+     *  )
+     *
+     * @OA\Response(response=200,description="Returns nothing")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -473,36 +535,44 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Post("/api/exim/server/save", name="api_save_server")
-     * @SWG\Post(tags={"server"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\ServerDto[id]",
-     *     in="query",
-     *     type="string",
-     *     default=null,
-     *     description="id server"
+     * @OA\Post(
+     *      tags={"server"},
+     *      @OA\Parameter(
+     *         description="id server",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\ServerDto[id]",
+     *         @OA\Schema(
+     *           type="string",
+     *           default=null,
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="ip server",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\ServerDto[ip]",
+     *         @OA\Schema(
+     *           type="string",
+     *           pattern="\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}",
+     *           default="172.20.1.4",
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="hostname server",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         @OA\Schema(
+     *           type="string",
+     *           default="mail.ite-ng.ru",
+     *         )
+     *     )
      * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\ServerDto[ip]",
-     *     in="query",
-     *     type="string",
-     *     pattern="\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}",
-     *     default="172.20.1.4",
-     *     description="ip server"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
-     *     in="query",
-     *     type="string",
-     *     default="mail.ite-ng.ru",
-     *     description="hostname server"
-     * )
-     * @SWG\Response(response=200,description="Returns the rewards of default generated domain",
-     *     @SWG\Schema(
+     * @OA\Response(response=200,description="Returns the rewards of default generated domain",
+     *     @OA\Schema(
      *        type="object",
      *        example={"hostNameServer": "ite-ng.ru", "ipServer": "172.20.1.4"}
      *     )
      * )
-     * @SWG\Response(response=400,description="set ip and name domain")
+     * @OA\Response(response=400,description="set ip and name domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -518,28 +588,36 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/spam/rules", name="api_spam_rules")
-     * @SWG\Get(tags={"spam"})
-     * @SWG\Response(response=200,description="Returns the spam rules")
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
-     *     in="query",
-     *     type="array",
-     *     description="select spam filter type",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
-     *     )
+     * @OA\Get(
+     *     tags={"spam"},
+     *     @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
+     *         in="query",
+     *         description="select spam conformity type",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
+     *     @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
+     *         in="query",
+     *         description="select spam conformity type",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
-     *     in="query",
-     *     type="array",
-     *     description="select spam conformity type",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
-     *     )
-     * )
+     * @OA\Response(response=200,description="Returns the spam rules")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -552,8 +630,8 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/spam/class", name="api_spam_rules_class")
-     * @SWG\Get(tags={"spam"})
-     * @SWG\Response(response=200,description="Returns the spam rules class")
+     * @OA\Get(tags={"spam"})
+     * @OA\Response(response=200,description="Returns the spam rules class")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -564,8 +642,8 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/spam/conformity", name="api_spam_rules_conformity")
-     * @SWG\Get(tags={"spam"})
-     * @SWG\Response(response=200,description="Returns the spam rules conformity")
+     * @OA\Get(tags={"spam"})
+     * @OA\Response(response=200,description="Returns the spam rules conformity")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -579,42 +657,54 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Post("/api/exim/spam/save", name="api_save_spam")
-     * @SWG\Post(tags={"spam"})
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\SpamDto[id]",
-     *     in="query",
-     *     type="string",
-     *     default=null,
-     *     description="id spam"
+     * @OA\Post(
+     *      tags={"spam"},
+     *      @OA\Parameter(
+     *         description="id spam",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\SpamDto[id]",
+     *         @OA\Schema(
+     *           type="string",
+     *           default=null,
+     *         )
+     *      ),
+     *      @OA\Parameter(
+     *         description="spam Record",
+     *         in="query",
+     *         name="Evrinoma\EximBundle\Dto\SpamDto[spamRecord]",
+     *         @OA\Schema(
+     *           type="string",
+     *           default=null,
+     *         )
+     *      ),
+     *      @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
+     *         in="query",
+     *         description="select spam filter type",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
+     *      @OA\Parameter(
+     *         name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
+     *         in="query",
+     *         description="select spam conformity type",
+     *         @OA\Schema(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="string",
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class),
+     *              ),
+     *          ),
+     *         style="form"
+     *     ),
      * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\SpamDto[spamRecord]",
-     *     in="query",
-     *     type="string",
-     *     default=null,
-     *     description="spam Record"
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
-     *     in="query",
-     *     type="array",
-     *     description="select spam filter type",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class)
-     *     )
-     * )
-     * @SWG\Parameter(
-     *     name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
-     *     in="query",
-     *     type="array",
-     *     description="select spam conformity type",
-     *     items=@SWG\Items(
-     *         type="string",
-     *         ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class)
-     *     )
-     * )
-     * @SWG\Response(response=400,description="set ip and name domain")
+     * @OA\Response(response=400,description="set ip and name domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
@@ -627,8 +717,8 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/spam/rules_type", name="api_spam_rules_type")
-     * @SWG\Get(tags={"spam"})
-     * @SWG\Response(response=200,description="Returns the spam rules types")
+     * @OA\Get(tags={"spam"})
+     * @OA\Response(response=200,description="Returns the spam rules types")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
