@@ -107,9 +107,20 @@ final class EximApiController extends AbstractApiController
      * @OA\Get(
      *      tags={"acl"},
      *      @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\AclDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
      *         description="ID record",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\AclDto[id]",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(
      *           type="string",
@@ -158,8 +169,19 @@ final class EximApiController extends AbstractApiController
      * @OA\Post(
      *      tags={"acl"},
      *      @OA\Parameter(
+     *         description="class",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\AclDto[id]",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\AclDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         in="query",
+     *         name="id",
      *         description="ID record",
      *         @OA\Schema(
      *           type="string",
@@ -167,14 +189,14 @@ final class EximApiController extends AbstractApiController
      *     ),
      *      @OA\Parameter(
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\AclDto[email]",
+     *         name="email",
      *         description="email or domain record",
      *         @OA\Schema(
      *           type="string",
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\AclDto[type]",
+     *         name="type",
      *         in="query",
      *         description="black or white",
      *         required=true,
@@ -182,13 +204,13 @@ final class EximApiController extends AbstractApiController
      *              type="array",
      *              @OA\Items(
      *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\TypeAclType::class),
+     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\AclType::class),
      *              ),
      *          ),
      *         style="form"
      *     ),
      *     @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
+     *         name="domain",
      *         in="query",
      *         description="select domain",
      *         required=true,
@@ -248,9 +270,20 @@ final class EximApiController extends AbstractApiController
      * @OA\Get(
      *      tags={"domain"},
      *      @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
      *         description="page number",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[page]",
+     *         name="page",
      *         @OA\Schema(
      *           type="integer",
      *           default="1",
@@ -259,7 +292,7 @@ final class EximApiController extends AbstractApiController
      *     @OA\Parameter(
      *         description="per page records",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[per_page]",
+     *         name="per_page",
      *         @OA\Schema(
      *           type="integer",
      *           default="0",
@@ -268,7 +301,7 @@ final class EximApiController extends AbstractApiController
      *     @OA\Parameter(
      *         description="filter by domain or mx",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[filter]",
+     *         name="filter",
      *         @OA\Schema(
      *           type="filter by domain or mx",
      *           default="",
@@ -298,9 +331,20 @@ final class EximApiController extends AbstractApiController
      * @OA\Delete(
      *     tags={"domain"},
      *     @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         description="id record",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[id]",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(
      *           type="integer",
@@ -326,7 +370,18 @@ final class EximApiController extends AbstractApiController
      * @OA\Post(
      *     tags={"domain"}),
      * @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     * @OA\Parameter(
+     *         name="hostname",
      *         in="query",
      *         description="This is a parameter",
      *         required=true,
@@ -342,7 +397,7 @@ final class EximApiController extends AbstractApiController
      * @OA\Parameter(
      *         description="Mail name server",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\DomainDto[domain]",
+     *         name="domain",
      *         required=true,
      *         @OA\Schema(
      *           type="string",
@@ -373,8 +428,20 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/log/search", name="api_log_search")
-     * @OA\Get(tags={"log"})
-     * @OA\Parameter(
+     * @OA\Get(
+     *     tags={"log"},
+     *     @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *     @OA\Parameter(
      *         description="search for",
      *         in="query",
      *         name="searchString",
@@ -384,7 +451,7 @@ final class EximApiController extends AbstractApiController
      *           default="@ite-ng.ru",
      *         )
      *     ),
-     * @OA\Parameter(
+     *     @OA\Parameter(
      *         name="searchFile",
      *         in="query",
      *         description="search there",
@@ -505,7 +572,18 @@ final class EximApiController extends AbstractApiController
      * @OA\Delete(
      *     tags={"server"},
      *     @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\ServerDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="hostname",
      *         in="query",
      *         description="This is a parameter",
      *         @OA\Schema(
@@ -538,9 +616,20 @@ final class EximApiController extends AbstractApiController
      * @OA\Post(
      *      tags={"server"},
      *      @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\ServerDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
      *         description="id server",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\ServerDto[id]",
+     *         name="id",
      *         @OA\Schema(
      *           type="string",
      *           default=null,
@@ -549,7 +638,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="ip server",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\ServerDto[ip]",
+     *         name="ip",
      *         @OA\Schema(
      *           type="string",
      *           pattern="\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}",
@@ -559,7 +648,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="hostname server",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\ServerDto[hostname]",
+     *         name="hostname",
      *         @OA\Schema(
      *           type="string",
      *           default="mail.ite-ng.ru",
@@ -591,7 +680,18 @@ final class EximApiController extends AbstractApiController
      * @OA\Get(
      *     tags={"spam"},
      *     @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\RuleTypeDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="type",
      *         in="query",
      *         description="select spam conformity type",
      *         @OA\Schema(
@@ -604,7 +704,7 @@ final class EximApiController extends AbstractApiController
      *         style="form"
      *     ),
      *     @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
+     *         name="type",
      *         in="query",
      *         description="select spam conformity type",
      *         @OA\Schema(
@@ -658,11 +758,22 @@ final class EximApiController extends AbstractApiController
     /**
      * @Rest\Post("/api/exim/spam/save", name="api_save_spam")
      * @OA\Post(
-     *      tags={"spam"},
+     *     tags={"spam"},
+     *     @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\SpamDto",
+     *           readOnly=true
+     *         )
+     *     ),
      *      @OA\Parameter(
      *         description="id spam",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\SpamDto[id]",
+     *         name="id",
      *         @OA\Schema(
      *           type="string",
      *           default=null,
@@ -671,14 +782,14 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="spam Record",
      *         in="query",
-     *         name="Evrinoma\EximBundle\Dto\SpamDto[spamRecord]",
+     *         name="spamRecord",
      *         @OA\Schema(
      *           type="string",
      *           default=null,
      *         )
      *      ),
      *      @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\RuleTypeDto[type]",
+     *         name="type",
      *         in="query",
      *         description="select spam filter type",
      *         @OA\Schema(
@@ -691,7 +802,7 @@ final class EximApiController extends AbstractApiController
      *         style="form"
      *     ),
      *      @OA\Parameter(
-     *         name="Evrinoma\EximBundle\Dto\ConformityDto[type]",
+     *         name="type",
      *         in="query",
      *         description="select spam conformity type",
      *         @OA\Schema(
