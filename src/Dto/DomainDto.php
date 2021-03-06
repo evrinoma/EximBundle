@@ -39,7 +39,7 @@ class DomainDto extends AbstractDto implements VuetableInterface
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return Domain::class;
     }
@@ -73,7 +73,7 @@ class DomainDto extends AbstractDto implements VuetableInterface
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $class = $request->get('class');
 
@@ -137,14 +137,6 @@ class DomainDto extends AbstractDto implements VuetableInterface
     public function getFilter()
     {
         return $this->filter;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return 'domain';
     }
 
     /**

@@ -27,7 +27,7 @@ class ServerDto extends AbstractDto
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return Server::class;
     }
@@ -69,7 +69,7 @@ class ServerDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $class = $request->get('class');
 
@@ -103,14 +103,6 @@ class ServerDto extends AbstractDto
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return 'server';
     }
 
     /**

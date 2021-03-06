@@ -2,8 +2,6 @@
 
 namespace Evrinoma\EximBundle\Dto;
 
-use Evrinoma\DtoBundle\Annotation\ApartAnnotation\DtoAdapterItem;
-use Evrinoma\DtoBundle\Annotation\DtoAdapter;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
@@ -37,11 +35,11 @@ class LogSearchDto extends AbstractDto
     }
 
     /**
-     * @DtoAdapter(adaptors={
-     *     @DtoAdapterItem(class="Evrinoma\SettingsBundle\Dto\SettingsDto",method="setClassSettingsEntity")
+     * DtoAdapter(adaptors={
+     *     DtoAdapterItem(class="Evrinoma\SettingsBundle\Dto\SettingsDto",method="setClassSettingsEntity")
      * })
      */
-    public function getClass()
+    public function getClass():string
     {
         return parent::getClass();
     }
@@ -66,7 +64,7 @@ class LogSearchDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $searchString = $request->get('searchString');
         $searchFile   = $request->get('searchFile');
@@ -85,7 +83,7 @@ class LogSearchDto extends AbstractDto
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return static::class;
     }
@@ -106,14 +104,6 @@ class LogSearchDto extends AbstractDto
     public function getSearchFile()
     {
         return $this->searchFile;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return DtoInterface::DEFAULT_LOOKING_REQUEST;
     }
 
     /**

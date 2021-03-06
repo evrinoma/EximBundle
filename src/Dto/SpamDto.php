@@ -50,7 +50,7 @@ class SpamDto extends AbstractDto
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return Spam::class;
     }
@@ -129,14 +129,6 @@ class SpamDto extends AbstractDto
     {
         return $this->spamRecord && (preg_match("/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/", $this->spamRecord) === 1);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return DtoInterface::DEFAULT_LOOKING_REQUEST;
-    }
 //endregion Public
 
 //region SECTION: Private
@@ -193,7 +185,7 @@ class SpamDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $class = $request->get('class');
 

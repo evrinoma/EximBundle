@@ -26,7 +26,7 @@ class RuleTypeDto extends AbstractDto
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return Filter::class;
     }
@@ -50,7 +50,7 @@ class RuleTypeDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $class = $request->get('class');
 
@@ -64,14 +64,6 @@ class RuleTypeDto extends AbstractDto
 //endregion SECTION: Dto
 
 //region SECTION: Getters/Setters
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return 'type';
-    }
-
     /**
      * @return mixed
      */

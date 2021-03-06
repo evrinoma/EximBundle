@@ -2,14 +2,13 @@
 
 namespace Evrinoma\EximBundle\Dto\ApartDto;
 
-use Evrinoma\DtoBundle\Dto\AbstractApartDto;
 
 /**
  * Class FileDto
  *
  * @package Evrinoma\EximBundle\Dto\ApartDto
  */
-class FileDto extends AbstractApartDto
+class FileDto
 {
 //region SECTION: Fields
     private $name;

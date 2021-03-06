@@ -33,7 +33,7 @@ class ServerType extends AbstractType
      *
      * @param ServerManagerInterface $serverManager
      */
-    public function __construct(FServerManagerInterface $serverManager)
+    public function __construct(ServerManagerInterface $serverManager)
     {
         $this->serverManager = $serverManager;
     }

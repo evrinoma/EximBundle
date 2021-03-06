@@ -26,7 +26,7 @@ class ConformityDto extends AbstractDto
     /**
      * @return mixed
      */
-    protected function getClassEntity()
+    protected function getClassEntity():?string
     {
         return Conformity::class;
     }
@@ -50,7 +50,7 @@ class ConformityDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request)
+    public function toDto($request):DtoInterface
     {
         $class = $request->get('class');
 
@@ -64,14 +64,6 @@ class ConformityDto extends AbstractDto
 //endregion SECTION: Dto
 
 //region SECTION: Getters/Setters
-    /**
-     * @inheritDoc
-     */
-    public function lookingForRequest()
-    {
-        return 'conformity';
-    }
-
     /**
      * @return mixed
      */
