@@ -25,7 +25,7 @@ final class SearchManager extends AbstractEntityManager implements SearchManager
     /**
      * @var \Evrinoma\SettingsBundle\Entity\Settings[]
      */
-    private $settings;
+    private $settings = [];
     private $searchResult = [];
 
     /**
