@@ -83,21 +83,18 @@ services:
   evrinoma.exim.form.rest.conformity:
     class: Evrinoma\EximBundle\Form\Rest\ConformityType
     arguments:
-      - '@evrinoma.dto.factory'
       - '@evrinoma.exim.spam.manager'
     tags: { - name: form.type }
 
   evrinoma.exim.form.rest.domain:
     class: Evrinoma\EximBundle\Form\Rest\DomainType
     arguments:
-      - '@evrinoma.dto.factory'
       - '@evrinoma.exim.domain.manager'
     tags: { - name: form.type }
 
   evrinoma.exim.form.rest.file_search:
     class: Evrinoma\EximBundle\Form\Rest\FileSearchType
     arguments:
-      - '@evrinoma.dto.factory'
       - '@evrinoma.settings.manager'
 
     tags: { - name: form.type }
@@ -105,19 +102,17 @@ services:
   evrinoma.exim.form.rest.filter:
     class: Evrinoma\EximBundle\Form\Rest\FilterType
     arguments:
-      - '@evrinoma.dto.factory'
       - '@evrinoma.exim.spam.manager'
     tags: { - name: form.type }
 
   evrinoma.exim.form.rest.server:
     class: Evrinoma\EximBundle\Form\Rest\ServerType
     arguments:
-      - '@evrinoma.dto.factory'
       - '@evrinoma.exim.server.manager'
     tags: { - name: form.type }
 
-  evrinoma.exim.form.rest.type_acl:
-    class: Evrinoma\EximBundle\Form\Rest\TypeAclType
+  evrinoma.exim.form.rest.acl:
+    class: Evrinoma\EximBundle\Form\Rest\AclType
     arguments:
       - '@evrinoma.exim.acl.manager'
     tags: { - name: form.type }

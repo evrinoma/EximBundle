@@ -21,20 +21,17 @@ class DomainType extends AbstractType
 //region SECTION: Fields
 
     private $domainManager;
-    private $factoryDto;
 //endregion Fields
 
 //region SECTION: Constructor
     /**
      * DomainType constructor.
      *
-     * @param FactoryDto             $factoryDto
      * @param DomainManagerInterface $domainManager
      */
-    public function __construct(FactoryDto $factoryDto, DomainManagerInterface $domainManager)
+    public function __construct(DomainManagerInterface $domainManager)
     {
         $this->domainManager = $domainManager;
-        $this->factoryDto    = $factoryDto;
     }
 
 //endregion Constructor
@@ -43,9 +40,8 @@ class DomainType extends AbstractType
     {
         $callback = function (Options $options) {
             $domains   = [];
-            $domainDto = $this->factoryDto->cloneDto(DomainDto::class);
             /** @var Domain $domain */
-            foreach ($this->domainManager->get($domainDto)->getData() as $domain) {
+            foreach ($this->domainManager->get(new DomainDto())->getData() as $domain) {
                 $domains[] = $domain->getDomainName();
             }
 

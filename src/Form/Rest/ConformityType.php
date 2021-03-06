@@ -21,11 +21,6 @@ class ConformityType extends AbstractType
 {
 //region SECTION: Fields
     /**
-     * @var FactoryDto
-     */
-    private $factoryDto;
-
-    /**
      * @var SpamManagerInterface
      */
     private $spamManager;
@@ -35,13 +30,11 @@ class ConformityType extends AbstractType
     /**
      * ServerType constructor.
      *
-     * @param FactoryDto           $factoryDto
      * @param SpamManagerInterface $spamManager
      */
-    public function __construct(FactoryDto $factoryDto, SpamManagerInterface $spamManager)
+    public function __construct(SpamManagerInterface $spamManager)
     {
         $this->spamManager = $spamManager;
-        $this->factoryDto  = $factoryDto;
     }
 
 //endregion Constructor
@@ -50,9 +43,8 @@ class ConformityType extends AbstractType
     {
         $callback = function (Options $options) {
             $conformists = [];
-            $spamDto     = $this->factoryDto->cloneDto(SpamDto::class);
             /** @var Filter $rule */
-            foreach ($this->spamManager->getConformity($spamDto)->getData() as $rule) {
+            foreach ($this->spamManager->getConformity(new SpamDto())->getData() as $rule) {
                 $conformists[] = $rule->getType();
             }
 

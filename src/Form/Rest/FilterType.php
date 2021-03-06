@@ -21,11 +21,6 @@ class FilterType extends AbstractType
 {
 //region SECTION: Fields
     /**
-     * @var FactoryDto
-     */
-    private $factoryDto;
-
-    /**
      * @var SpamManagerInterface
      */
     private $spamManager;
@@ -35,13 +30,11 @@ class FilterType extends AbstractType
     /**
      * ServerType constructor.
      *
-     * @param FactoryDto  $factoryDto
      * @param SpamManagerInterface $spamManager
      */
-    public function __construct(FactoryDto $factoryDto, SpamManagerInterface $spamManager)
+    public function __construct(SpamManagerInterface $spamManager)
     {
         $this->spamManager = $spamManager;
-        $this->factoryDto  = $factoryDto;
     }
 
 //endregion Constructor
@@ -50,9 +43,8 @@ class FilterType extends AbstractType
     {
         $callback = function (Options $options) {
             $filterTypes = [];
-            $spamDto     = $this->factoryDto->cloneDto(SpamDto::class);
             /** @var Filter $rule */
-            foreach ($this->spamManager->getType($spamDto)->getData() as $rule) {
+            foreach ($this->spamManager->getType(new SpamDto())->getData() as $rule) {
                 $filterTypes[] = $rule->getType();
             }
 

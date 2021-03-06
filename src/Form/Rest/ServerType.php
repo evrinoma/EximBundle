@@ -25,23 +25,17 @@ class ServerType extends AbstractType
      * @var ServerManagerInterface.
      */
     private $serverManager;
-    /**
-     * @var FactoryDto
-     */
-    private $factoryDto;
 //endregion Fields
 
 //region SECTION: Constructor
     /**
      * ServerType constructor.
      *
-     * @param FactoryDto    $factoryDto
      * @param ServerManagerInterface $serverManager
      */
-    public function __construct(FactoryDto $factoryDto, ServerManagerInterface $serverManager)
+    public function __construct(FServerManagerInterface $serverManager)
     {
         $this->serverManager = $serverManager;
-        $this->factoryDto = $factoryDto;
     }
 
 //endregion Constructor
@@ -50,9 +44,8 @@ class ServerType extends AbstractType
     {
         $callback = function (Options $options) {
             $servers = [];
-            $serverDto = $this->factoryDto->cloneDto(ServerDto::class);
             /** @var Server $server */
-            foreach ($this->serverManager->get($serverDto)->getData() as $server) {
+            foreach ($this->serverManager->get(new ServerDto())->getData() as $server) {
                 $servers[] = $server->getHostname();
             }
 

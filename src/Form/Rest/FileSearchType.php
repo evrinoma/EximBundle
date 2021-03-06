@@ -24,21 +24,15 @@ class FileSearchType extends AbstractType
      * @var SettingsManagerInterface
      */
     private $settingsManager;
-
-    /**
-     * @var FactoryDto
-     */
-    private $factoryDto;
 //endregion Fields
 
 //region SECTION: Constructor
     /**
      * ServerType constructor.
      */
-    public function __construct(FactoryDto $factoryDto, SettingsManagerInterface $settingsManager = null)
+    public function __construct(SettingsManagerInterface $settingsManager = null)
     {
         $this->settingsManager = $settingsManager;
-        $this->factoryDto      = $factoryDto;
     }
 
 //endregion Constructor
@@ -49,10 +43,7 @@ class FileSearchType extends AbstractType
             $fileList = [];
             $class    = $options->offsetGet(self::REST_CLASS_ENTITY);
             if ($class) {
-                $dto         = $this->factoryDto->cloneDto($class);
-                $settingsDto = $dto->getFactoryAdapter()->setFrom($dto)->setTo(SettingsDto::class)->adapter();
-
-                foreach ($this->settingsManager->getSettings($settingsDto) as $file) {
+                foreach ($this->settingsManager->getSettings(new SettingsDto()) as $file) {
                     $data = $file->getData();
                     if ($data instanceof FileDto) {
                         /** @var $data FileDto */
