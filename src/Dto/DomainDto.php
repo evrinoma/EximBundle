@@ -161,7 +161,7 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
             $perPage    = $request->get('per_page');
             $filter     = $request->get('filter');
             $domainName = $request->get('domain');
-            $id         = $request->get('id_domain');
+            $id         = $request->get('domainId');
 
             if ($id !== null) {
                 $this->setId($id);

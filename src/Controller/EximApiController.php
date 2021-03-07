@@ -118,9 +118,9 @@ final class EximApiController extends AbstractApiController
      *         )
      *     ),
      *      @OA\Parameter(
-     *         description="ID record",
+     *         description="ID acl record",
      *         in="query",
-     *         name="id_acl",
+     *         name="aclId",
      *         required=true,
      *         @OA\Schema(
      *           type="string",
@@ -178,13 +178,13 @@ final class EximApiController extends AbstractApiController
      *                  "domain":"ite-ng.ru",
      *                  "type":"white",
      *                  "email":"test@test.ru",
-     *                  "id_acl":"2"
+     *                  "aclId":"2"
      *               },
      *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\AclDto"),
      *               @OA\Property(property="domain",type="string", description="select domain"),
      *               @OA\Property(property="type",type="string", description="select domain"),
      *               @OA\Property(property="email",type="string", description="email or domain record"),
-     *               @OA\Property(property="id_acl",type="string", description="ID acl record")
+     *               @OA\Property(property="aclId",type="string", description="ID acl record")
      *            )
      *         )
      *     )
@@ -205,7 +205,27 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/domain/domain", name="api_domain")
-     * @OA\Get(tags={"domain"})
+     * @OA\Get(tags={"domain"},
+     *      @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="ID record",
+     *         in="query",
+     *         name="domainId",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     )
+     * )
      *
      * @OA\Response(response=200,description="Returns the rewards of all generated domains")
      *

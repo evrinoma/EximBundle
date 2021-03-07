@@ -112,7 +112,7 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
         $class = $request->get(DtoInterface::DTO_CLASS);
 
         if ($class === $this->getClass()) {
-            $id      = $request->get('id_acl');
+            $id      = $request->get('aclId');
             $active  = $request->get('active');
             $deleted = $request->get('is_deleted');
             $email   = $request->get('email');
