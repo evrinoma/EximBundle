@@ -1,14 +1,8 @@
 <?php
 
-namespace Evrinoma\EximBundle\Dto\ApartDto;
+namespace Evrinoma\EximBundle\Std;
 
-
-/**
- * Class FileDto
- *
- * @package Evrinoma\EximBundle\Dto\ApartDto
- */
-class FileDto
+class FileStd
 {
 //region SECTION: Fields
     private $name;
@@ -43,7 +37,7 @@ class FileDto
     /**
      * @param mixed $name
      *
-     * @return FileDto
+     * @return FileStd
      */
     public function setName($name)
     {
@@ -55,7 +49,7 @@ class FileDto
     /**
      * @param mixed $path
      *
-     * @return FileDto
+     * @return FileStd
      */
     public function setPath($path)
     {
