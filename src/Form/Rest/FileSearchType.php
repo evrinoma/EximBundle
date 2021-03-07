@@ -2,8 +2,7 @@
 
 namespace Evrinoma\EximBundle\Form\Rest;
 
-use Evrinoma\DtoBundle\Factory\FactoryDto;
-use Evrinoma\EximBundle\Dto\ApartDto\FileDto;
+use Evrinoma\EximBundle\Std\FileStd;
 use Evrinoma\SettingsBundle\Dto\SettingsDto;
 use Evrinoma\SettingsBundle\Manager\SettingsManagerInterface;
 use Evrinoma\UtilsBundle\Form\Rest\RestChoiceType;
@@ -45,8 +44,8 @@ class FileSearchType extends AbstractType
             if ($class) {
                 foreach ($this->settingsManager->getSettings(new SettingsDto()) as $file) {
                     $data = $file->getData();
-                    if ($data instanceof FileDto) {
-                        /** @var $data FileDto */
+                    if ($data instanceof FileStd) {
+                        /** @var $data FileStd */
                         $fileList[] = $data->getName();
                     }
                 }

@@ -3,8 +3,7 @@
 namespace Evrinoma\EximBundle\Fixtures;
 
 
-use Doctrine\Common\Collections\Criteria;
-use Evrinoma\EximBundle\Dto\ApartDto\FileDto;
+use Evrinoma\EximBundle\Std\FileStd;
 use Evrinoma\EximBundle\Dto\LogSearchDto;
 use Evrinoma\SettingsBundle\Entity\Settings;
 
@@ -67,7 +66,7 @@ class SearchSettingsFixtures extends AbstractEximFixtures
         $repository = $this->objectManager->getRepository(Settings::class);
 
         foreach ($this->files as $name => $filePath) {
-            $file = new FileDto();
+            $file = new FileStd();
 
             $settingFile = new Settings();
             $settingFile
