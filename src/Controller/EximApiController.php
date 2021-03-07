@@ -120,7 +120,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="ID record",
      *         in="query",
-     *         name="id",
+     *         name="id_acl",
      *         required=true,
      *         @OA\Schema(
      *           type="string",
@@ -140,7 +140,7 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/acl/class", name="api_acl_class")
-     * @OA\Get(tags={"acl"})
+     * @OA\Get(tags={"acl"}, deprecated=true)
      * @OA\Response(response=200,description="Returns class acl entity")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -168,63 +168,30 @@ final class EximApiController extends AbstractApiController
      * @Rest\Post("/api/exim/acl/save", name="api_acl_save")
      * @OA\Post(
      *      tags={"acl"},
-     *      @OA\Parameter(
-     *         description="class",
-     *         in="query",
-     *         name="class",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\AclDto",
-     *           readOnly=true
+     *     description="the method perform save acl",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               example={
+     *                  "class":"Evrinoma\EximBundle\Dto\AclDto",
+     *                  "domain":"ite-ng.ru",
+     *                  "type":"white",
+     *                  "email":"test@test.ru",
+     *                  "id_acl":"2"
+     *               },
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\AclDto"),
+     *               @OA\Property(property="domain",type="string", description="select domain"),
+     *               @OA\Property(property="type",type="string", description="select domain"),
+     *               @OA\Property(property="email",type="string", description="email or domain record"),
+     *               @OA\Property(property="id_acl",type="string", description="ID acl record")
+     *            )
      *         )
-     *     ),
-     *      @OA\Parameter(
-     *         in="query",
-     *         name="id",
-     *         description="ID record",
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *      @OA\Parameter(
-     *         in="query",
-     *         name="email",
-     *         description="email or domain record",
-     *         @OA\Schema(
-     *           type="string",
-     *         )
-     *     ),
-     *     @OA\Parameter(
-     *         name="type",
-     *         in="query",
-     *         description="black or white",
-     *         required=true,
-     *         @OA\Schema(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\AclType::class),
-     *              ),
-     *          ),
-     *         style="form"
-     *     ),
-     *     @OA\Parameter(
-     *         name="domain",
-     *         in="query",
-     *         description="select domain",
-     *         required=true,
-     *         @OA\Schema(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\DomainType::class),
-     *              ),
-     *          ),
-     *         style="form"
      *     )
      * )
      * @OA\Response(response=200,description="Returns nothing")
+     *
+     *
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
@@ -253,7 +220,7 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/domain/class", name="api_domain_class")
-     * @OA\Get(tags={"domain"})
+     * @OA\Get(tags={"domain"}, deprecated=true)
      *
      * @OA\Response(response=200,description="Returns the class domain")
      *
@@ -556,7 +523,7 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/server/class", name="api_server_class")
-     * @OA\Get(tags={"server"})
+     * @OA\Get(tags={"server"}, deprecated=true)
      *
      * @OA\Response(response=200,description="Returns the class domain")
      *
@@ -730,7 +697,7 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/spam/class", name="api_spam_rules_class")
-     * @OA\Get(tags={"spam"})
+     * @OA\Get(tags={"spam"}, deprecated=true)
      * @OA\Response(response=200,description="Returns the spam rules class")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse

@@ -2,6 +2,7 @@
 
 namespace Evrinoma\EximBundle\Dto;
 
+use Evrinoma\DtoBundle\Adaptor\EntityAdaptorInterface;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Server;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class ServerDto extends AbstractDto
+class ServerDto extends AbstractDto implements EntityAdaptorInterface
 {
     use ActiveTrait;
 
@@ -25,9 +26,9 @@ class ServerDto extends AbstractDto
 
 //region SECTION: Protected
     /**
-     * @return mixed
+     * @return string
      */
-    protected function getClassEntity():?string
+    public function getClassEntity():string
     {
         return Server::class;
     }
@@ -39,11 +40,12 @@ class ServerDto extends AbstractDto
      *
      * @return mixed
      */
-    public function fillEntity($entity)
+    public function fillEntity($entity):void
     {
-        $entity->setIp($this->getIp())->setHostname($this->getHostName())->setActive();
-
-        return $entity;
+        $entity
+            ->setIp($this->getIp())
+            ->setHostname($this->getHostName())
+            ->setActive();
     }
 
     /**
@@ -71,13 +73,13 @@ class ServerDto extends AbstractDto
      */
     public function toDto($request):DtoInterface
     {
-        $class = $request->get('class');
+        $class = $request->get(DtoInterface::DTO_CLASS);
 
-        if ($class === $this->getClassEntity()) {
+        if ($class === $this->getClass()) {
 
             $ip   = $request->get('ip');
             $name = $request->get('hostname');
-            $id   = $request->get('id');
+            $id   = $request->get('id_server');
 
             if ($name) {
                 $this->setHostName($name);

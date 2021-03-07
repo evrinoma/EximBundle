@@ -4,7 +4,7 @@ namespace Evrinoma\EximBundle\Manager;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Evrinoma\EximBundle\Dto\ApartDto\FileDto;
+use Evrinoma\EximBundle\Std\FileStd;
 use Evrinoma\EximBundle\Dto\LogSearchDto;
 use Evrinoma\SettingsBundle\Manager\SettingsManagerInterface;
 use Evrinoma\ShellBundle\Core\ShellInterface;
@@ -88,7 +88,7 @@ final class SearchManager extends AbstractEntityManager implements SearchManager
     {
         foreach ($this->settings as $setting) {
             $fileDto = $setting->getData();
-            if ($fileDto instanceof FileDto) {
+            if ($fileDto instanceof FileStd) {
                 if ($this->dto->hasFile($fileDto->getName())) {
                     $file = $fileDto->getFilePath();
                     $run  = $this->shellManager->getProgram('cat').' '.escapeshellarg($file).' | '.

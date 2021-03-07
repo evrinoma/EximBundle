@@ -52,9 +52,6 @@ class AclManager extends AbstractEntityManager implements AclManagerInterface
     /**
      * @param AbstractDto $aclDto
      *
-     * @param             $entity
-     * @param             $temp
-     *
      * @return Acl
      * @throws \Exception
      */
@@ -62,7 +59,7 @@ class AclManager extends AbstractEntityManager implements AclManagerInterface
     {
         if ($aclDto->isValidEmail()) {
             $entity = $this->repository->setDto($aclDto)->findAcl();
-            $aclDto->setEntitys($entity);
+            $aclDto->setEntities($entity);
 
             $recordExist = false;
             if (!$aclDto->getId() && $aclDto->isEmail() && count($entity)) {
@@ -82,7 +79,7 @@ class AclManager extends AbstractEntityManager implements AclManagerInterface
                 $this->setRestClientErrorBadRequest();
                 $entity = 'уже существует';
             } else {
-                $aclDto->getDomain()->setEntitys($this->domainManager->get($aclDto->getDomain())->getData());
+                $aclDto->getDomain()->setEntities($this->domainManager->get($aclDto->getDomain())->getData());
                 if ($aclDto->getDomain()->hasSingleEntity()) {
                     $entity = $this->save($aclDto, count($entity) ? reset($entity) : new Acl());
                 } else {
