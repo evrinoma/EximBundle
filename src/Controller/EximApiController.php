@@ -119,7 +119,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="ID acl record",
      *         in="query",
-     *         name="aclId",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(
      *           type="string",
@@ -135,19 +135,6 @@ final class EximApiController extends AbstractApiController
         $aclDto = $this->factoryDto->setRequest($this->request)->createDto(AclDto::class);
 
         return $this->json($this->aclManager->setRestSuccessOk()->get($aclDto)->getData(), $this->aclManager->getRestStatus());
-    }
-
-    /**
-     * @Rest\Get("/api/exim/acl/class", name="api_acl_class")
-     * @OA\Get(tags={"acl"}, deprecated=true)
-     * @OA\Response(response=200,description="Returns class acl entity")
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     * @throws \Exception
-     */
-    public function aclClassAction()
-    {
-        return $this->json($this->aclManager->setRestSuccessOk()->getRepositoryClass(), $this->aclManager->getRestStatus());
     }
 
     /**
@@ -172,22 +159,42 @@ final class EximApiController extends AbstractApiController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *               example={
-     *                  "class":"Evrinoma\EximBundle\Dto\AclDto",
-     *                  "domain":"ite-ng.ru",
-     *                  "type":"white",
-     *                  "email":"test@test.ru",
-     *                  "aclId":"2"
-     *               },
-     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\AclDto"),
-     *               @OA\Property(property="domain",type="string", description="select domain"),
-     *               @OA\Property(property="type",type="string", description="select domain"),
-     *               @OA\Property(property="email",type="string", description="email or domain record"),
-     *               @OA\Property(property="aclId",type="string", description="ID acl record")
+     *                  example={
+     *                      "class":"Evrinoma\EximBundle\Dto\AclDto",
+     *                      "type":"white",
+     *                      "email":"test@test.ru",
+     *                      "id":"2",
+     *                      "domain":{
+     *                          "id":"2",
+     *                          "domain":"lazurnoe.net",
+     *                          "server":{
+     *                              "id":"2",
+     *                              "hostname":"email.ite-ng.ru",
+     *                              "ip":"172.20.1.4",
+     *                          }
+     *                      }
+     *                  },
+     *                  @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\AclDto"),
+     *                  @OA\Property(property="type",type="string", description="select domain"),
+     *                  @OA\Property(property="email",type="string", description="email or domain record"),
+     *                  @OA\Property(property="id",type="string", description="ID acl record"),
+     *                  @OA\Property(
+     *                      property="domain",
+     *                      type="object",
+     *                      @OA\Property(property="id",type="string", description="id domain"),
+     *                      @OA\Property(property="domain",type="string", description="domain name"),
+     *                      @OA\Property(
+     *                          property="server",
+     *                          type="object",
+     *                          @OA\Property(property="id",type="string", description="id server"),
+     *                          @OA\Property(property="ip",type="string", description="ip server"),
+     *                          @OA\Property(property="hostname",type="string", description="hostname server"),
+     *                      )
+     *                  )
+     *               )
      *            )
      *         )
      *     )
-     * )
      * @OA\Response(response=200,description="Returns nothing")
      *
      *
@@ -219,7 +226,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="ID record",
      *         in="query",
-     *         name="domainId",
+     *         name="id",
      *         @OA\Schema(
      *           type="string",
      *         )
@@ -236,20 +243,6 @@ final class EximApiController extends AbstractApiController
 
         return $this->json($this->domainManager->setRestSuccessOk()->get($domainDto)->getData(), $this->domainManager->getRestStatus());
     }
-
-    /**
-     * @Rest\Get("/api/exim/domain/class", name="api_domain_class")
-     * @OA\Get(tags={"domain"}, deprecated=true)
-     *
-     * @OA\Response(response=200,description="Returns the class domain")
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function domainClassAction()
-    {
-        return $this->json($this->domainManager->setRestSuccessOk()->getRepositoryClass(), $this->domainManager->getRestStatus());
-    }
-
 
     /**
      * @Rest\Get("/api/exim/domain/query", name="api_query_domain")
@@ -326,7 +319,7 @@ final class EximApiController extends AbstractApiController
      *     @OA\Parameter(
      *         description="id record",
      *         in="query",
-     *         name="domainId",
+     *         name="id",
      *         required=true,
      *         @OA\Schema(
      *           type="integer",
@@ -352,21 +345,34 @@ final class EximApiController extends AbstractApiController
      * @OA\Post(
      *      tags={"domain"}),
      *      description="the method perform save domain",
-     * @OA\RequestBody(
+     *      @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
      *               example={
      *                  "class":"Evrinoma\EximBundle\Dto\DomainDto",
-     *                  "hostname":"email.ite-ng.ru",
-     *                  "domain":"ite-ng.ru",
+     *                  "id":"2",
+     *                  "domain":"lazurnoe.net",
+     *                  "server":{
+     *                          "id":"2",
+     *                          "hostname":"email.ite-ng.ru",
+     *                          "ip":"172.20.1.4",
+     *                   }
      *               },
-     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\DomainDto"),
-     *               @OA\Property(property="hostname",type="string", description="Select hostname"),
-     *               @OA\Property(property="domain",type="string", description="Mail name server"),
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\ServerDto"),
+     *               @OA\Property(property="id",type="string", description="id domain"),
+     *               @OA\Property(property="domain",type="string", description="domain name"),
+     *               @OA\Property(
+     *                  property="server",
+     *                  type="object",
+     *                  @OA\Property(property="id",type="string", description="id server"),
+     *                  @OA\Property(property="ip",type="string", description="ip server"),
+     *                  @OA\Property(property="hostname",type="string", description="hostname server"),
+     *                )
      *            )
      *         )
-     *     ),
+     *     )
+     * )
      * @OA\Response(response=200,description="Returns the rewards of default generated domain",
      *     @OA\Schema(
      *        type="object",
@@ -518,7 +524,7 @@ final class EximApiController extends AbstractApiController
      *      @OA\Parameter(
      *         description="ID record",
      *         in="query",
-     *         name="serverId",
+     *         name="id",
      *         @OA\Schema(
      *           type="string",
      *         )
@@ -534,19 +540,6 @@ final class EximApiController extends AbstractApiController
         $serverDto = $this->factoryDto->setRequest($this->request)->createDto(ServerDto::class);
 
         return $this->json(['servers' => $this->serverManager->setRestSuccessOk()->get($serverDto)->getData()], $this->serverManager->getRestStatus());
-    }
-
-    /**
-     * @Rest\Get("/api/exim/server/class", name="api_server_class")
-     * @OA\Get(tags={"server"}, deprecated=true)
-     *
-     * @OA\Response(response=200,description="Returns the class domain")
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function serverClassAction()
-    {
-        return $this->json($this->serverManager->setRestSuccessOk()->getRepositoryClass(), $this->serverManager->getRestStatus());
     }
 
     /**
@@ -603,12 +596,12 @@ final class EximApiController extends AbstractApiController
      *             @OA\Schema(
      *               example={
      *                  "class":"Evrinoma\EximBundle\Dto\ServerDto",
-     *                  "serverId":"2",
+     *                  "id":"2",
      *                  "ip":"172.20.1.4",
      *                  "hostname":"mail.ite-ng.ru",
      *               },
      *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\ServerDto"),
-     *               @OA\Property(property="serverId",type="string", description="id server", default=""),
+     *               @OA\Property(property="id",type="string", description="id server", default=""),
      *               @OA\Property(property="ip",type="string", description="ip server"),
      *               @OA\Property(property="hostname",type="string", description="hostname server"),
      *            )
@@ -651,7 +644,7 @@ final class EximApiController extends AbstractApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="filterType",
+     *         name="filter[filterType]",
      *         in="query",
      *         description="select spam Filter type",
      *         @OA\Schema(
@@ -664,7 +657,7 @@ final class EximApiController extends AbstractApiController
      *         style="form"
      *     ),
      *     @OA\Parameter(
-     *         name="conformityType",
+     *         name="conformity[conformityType]",
      *         in="query",
      *         description="select spam Conformity type",
      *         @OA\Schema(
@@ -686,18 +679,6 @@ final class EximApiController extends AbstractApiController
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
         return $this->json($this->spamManager->setRestSuccessOk()->get($spamDto)->getData(), $this->spamManager->getRestStatus());
-    }
-
-    /**
-     * @Rest\Get("/api/exim/spam/class", name="api_spam_rules_class")
-     * @OA\Get(tags={"spam"}, deprecated=true)
-     * @OA\Response(response=200,description="Returns the spam rules class")
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function spamRulesClassAction()
-    {
-        return $this->json($this->spamManager->setRestSuccessOk()->getRepositoryClass(), $this->spamManager->getRestStatus());
     }
 
     /**
@@ -732,28 +713,42 @@ final class EximApiController extends AbstractApiController
      * @Rest\Post("/api/exim/spam/save", name="api_save_spam")
      * @OA\Post(
      *     tags={"spam"},
+     *      description="the method perform save spam rule",
      *      @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
      *               example={
      *                  "class":"Evrinoma\EximBundle\Dto\SpamDto",
-     *                  "spamId":"1",
+     *                  "id":"2",
      *                  "active":"b",
-     *                  "spamRecord":".experthost.com",
-     *                  "filterType":"helo",
-     *                  "conformityType":"soft",
+     *                  "spamRecord":"test.ru",
+     *                  "conformity":{
+     *                          "conformityType":"soft",
+     *                   },
+     *                  "filter":{
+     *                          "filterType":"helo",
+     *                   }
      *               },
-     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\SpamDto"),
-     *               @OA\Property(property="spamId",type="string", description="id spam", default=""),
-     *               @OA\Property(property="active",type="string", description="status spam rule"),
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\ServerDto"),
+     *               @OA\Property(property="id",type="string", description="id spam"),
      *               @OA\Property(property="spamRecord",type="string", description="spam Record"),
-     *               @OA\Property(property="filterType",type="string", description="select spam Filter type"),
-     *               @OA\Property(property="conformityType",type="string", description="select spam Conformity type"),
+     *               @OA\Property(property="active",type="string", description="status spam rule"),
+     *               @OA\Property(
+     *                  property="conformity",
+     *                  type="object",
+     *                  @OA\Property(property="conformityType",type="string", description="select spam Conformity type"),
+     *                ),
+     *               @OA\Property(
+     *                  property="filter",
+     *                  type="object",
+     *                  @OA\Property(property="filterType",type="string", description="select spam Filter type"),
+     *                )
      *            )
      *         )
      *     )
      * )
+     *
      * @OA\Response(response=400,description="set spamRecord, filterType and conformityType domain")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -763,6 +758,47 @@ final class EximApiController extends AbstractApiController
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
         return $this->json($this->spamManager->setRestSuccessOk()->toSave($spamDto), $this->spamManager->getRestStatus());
+    }
+
+
+    /**
+     * @Rest\Delete("/api/exim/spam/delete", name="api_delete_spam")
+     * @OA\Delete(
+     *     tags={"spam"},
+     *     description="the method perform delete spam rule",
+     *     @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\SpamDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         description="id record",
+     *         in="query",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="integer",
+     *           default="-1",
+     *         )
+     *     )
+     * )
+     * @OA\Response(response=200,description="Returns nothing")
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function spamDeleteAction()
+    {
+        $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
+
+        $this->spamManager->setRestSuccessOk()->get($spamDto)->lockEntitys();
+
+        return $this->json(['message' => 'the Spam rule was delete successFully'], $this->spamManager->getRestStatus());
     }
 //endregion Public
 }
