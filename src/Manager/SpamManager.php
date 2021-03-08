@@ -37,13 +37,12 @@ final class SpamManager extends AbstractEntityManager implements SpamManagerInte
      */
     public function toSave(SpamDto $spamDto)
     {
-        $entity = null;
-        $spamDto->getRuleType()->setEntitys($this->getType($spamDto)->getData());
-        $spamDto->getConformity()->setEntitys($this->getConformity($spamDto)->getData());
+        $spamDto->getRuleType()->setEntities($this->getType($spamDto)->getData());
+        $spamDto->getConformity()->setEntities($this->getConformity($spamDto)->getData());
 
         if ($spamDto->isValid()) {
             $entity = $this->repository->setDto($spamDto)->findSpam();
-            $spamDto->setEntitys($entity);
+            $spamDto->setEntities($entity);
             if (!$spamDto->getId() && count($entity)) {
                 $this->setRestClientErrorBadRequest();
                 $entity = 'уже существует';
@@ -88,10 +87,10 @@ final class SpamManager extends AbstractEntityManager implements SpamManagerInte
 
         $builder->where("filterType.active = 'a'");
 
-        if ($spamDto->getRuleType() && $spamDto->getRuleType()->getType()) {
+        if ($spamDto->getRuleType() && $spamDto->getRuleType()->getFilterType()) {
             $builder
                 ->andWhere('filterType.type = :filterType')
-                ->setParameter('filterType', $spamDto->getRuleType()->getType());
+                ->setParameter('filterType', $spamDto->getRuleType()->getFilterType());
         }
 
         $this->setData($builder->getQuery()->getResult());

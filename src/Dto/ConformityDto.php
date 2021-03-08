@@ -5,7 +5,8 @@ namespace Evrinoma\EximBundle\Dto;
 
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
-use Evrinoma\EximBundle\Entity\Conformity;
+use Evrinoma\UtilsBundle\Storage\StorageInterface;
+use Evrinoma\UtilsBundle\Storage\StorageTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -13,8 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class ConformityDto extends AbstractDto
+class ConformityDto extends AbstractDto implements StorageInterface
 {
+    use StorageTrait;
 //region SECTION: Fields
     /**
      * @var string
@@ -22,27 +24,19 @@ class ConformityDto extends AbstractDto
     private $type;
 //endregion Fields
 
-//region SECTION: Protected
+//region SECTION: Private
     /**
-     * @return mixed
-     */
-    protected function getClassEntity():?string
-    {
-        return Conformity::class;
-    }
-//endregion Protected
-
-//region SECTION: Public
-    /**
-     * @param $entity
+     * @param string $type
      *
-     * @return mixed
+     * @return ConformityDto
      */
-    public function fillEntity($entity)
+    private function setType(string $type)
     {
-        return $entity;
+        $this->type = $type;
+
+        return $this;
     }
-//endregion Public
+//endregion Private
 
 //region SECTION: Dto
     /**
@@ -50,12 +44,12 @@ class ConformityDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request):DtoInterface
+    public function toDto($request): DtoInterface
     {
-        $class = $request->get('class');
+        $class = $request->get(DtoInterface::DTO_CLASS);
 
-        if ($class === $this->getClassEntity()) {
-            $type = $request->get('type');
+        if ($class === $this->getClass()) {
+            $type = $request->get('conformityType');
             $this->setType($type);
         }
 
@@ -70,18 +64,6 @@ class ConformityDto extends AbstractDto
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * @param mixed $type
-     *
-     * @return ConformityDto
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
     }
 //endregion Getters/Setters
 }

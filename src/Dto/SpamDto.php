@@ -2,12 +2,15 @@
 
 namespace Evrinoma\EximBundle\Dto;
 
+use Evrinoma\DtoBundle\Adaptor\EntityAdaptorInterface;
 use Evrinoma\DtoBundle\Annotation\Dto;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Filter;
 use Evrinoma\EximBundle\Entity\Spam;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Storage\StorageInterface;
+use Evrinoma\UtilsBundle\Storage\StorageTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,15 +18,17 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class SpamDto extends AbstractDto
+class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInterface
 {
+    use StorageTrait;
+
 //region SECTION: Fields
 
     use ActiveTrait;
 
     private $id;
     /**
-     * @Dto(class="Evrinoma\EximBundle\Dto\ConformityDto")
+     * @Dto(class="Evrinoma\EximBundle\Dto\ConformityDto", generator="genRequestConformityDto")
      * @var ConformityDto
      */
     private $conformity;
@@ -32,7 +37,7 @@ class SpamDto extends AbstractDto
      */
     private $range;
     /**
-     * @Dto(class="Evrinoma\EximBundle\Dto\RuleTypeDto")
+     * @Dto(class="Evrinoma\EximBundle\Dto\RuleTypeDto", generator="genRequestRuleTypeDto")
      * @var RuleTypeDto
      */
     private $ruleType;
@@ -40,38 +45,13 @@ class SpamDto extends AbstractDto
      * @var string
      */
     private $spamRecord;
-    /**
-     * @var bool
-     */
-    private $isConformity = true;
-//endregion Fields
-
-//region SECTION: Protected
-    /**
-     * @return mixed
-     */
-    protected function getClassEntity():?string
-    {
-        return Spam::class;
-    }
-//endregion Protected
 
 //region SECTION: Public
-    /**
-     * @return bool
-     */
-    public function isConformity(): bool
-    {
-        return $this->isConformity;
-    }
 
     /**
      * @param Spam $entity
-     *
-     * @return mixed
-     * @throws \Exception
      */
-    public function fillEntity($entity)
+    public function fillEntity($entity): void
     {
         $entity
             ->setConformity($this->getConformity()->generatorEntity()->current())
@@ -79,8 +59,6 @@ class SpamDto extends AbstractDto
             ->setDomain($this->getSpamRecord())
             ->setUpdateAt(new \DateTime('now'))
             ->setActive($this->getActive());
-
-        return $entity;
     }
 
     /**
@@ -89,26 +67,21 @@ class SpamDto extends AbstractDto
     public function isValid()
     {
         $valid = false;
-        if (!$this->spamRecord) {
-            if ($this->getRuleType()->hasSingleEntity()) {
+        if ($this->spamRecord) {
+            if ($this->getRuleType() && $this->getRuleType()->hasSingleEntity()) {
                 /** @var Filter $entity */
                 $entity = $this->getRuleType()->generatorEntity()->current();
-                if ($entity->isPatternBurn()) {
-                    $valid = $this->isBurn();
+                if ($entity->isPatternBurn() && $this->isBurn()) {
+                    $valid = true;
                 }
-                if ($entity->isPatternIP()) {
-                    $valid = $this->isRange();
-                    if ($valid) {
-                        $this->setSpamRecord($this->range);
-                        $this->isConformity = false;
-                    }
+                if ($entity->isPatternIP() && $this->isRange()) {
+                    $this->setSpamRecord($this->range);
+                    $valid = true;
                 }
-                if ($entity->isPattern()) {
-                    $valid = $this->isHostName();
+                if ($entity->isPattern() && $this->isHostName()) {
+                    $valid = true;
                 }
             }
-        } else {
-            $valid = true;
         }
 
         return $valid;
@@ -129,6 +102,7 @@ class SpamDto extends AbstractDto
     {
         return $this->spamRecord && (preg_match("/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/", $this->spamRecord) === 1);
     }
+
 //endregion Public
 
 //region SECTION: Private
@@ -177,6 +151,31 @@ class SpamDto extends AbstractDto
 
         return $ip;
     }
+
+    /**
+     * @param string $spamRecord
+     *
+     * @return SpamDto
+     */
+    private function setSpamRecord(string $spamRecord)
+    {
+        $this->spamRecord = $spamRecord;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $id
+     *
+     * @return SpamDto
+     */
+    private function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+//endregion Private
 //endregion Private
 
 //region SECTION: Dto
@@ -185,28 +184,22 @@ class SpamDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request):DtoInterface
+    public function toDto($request): DtoInterface
     {
-        $class = $request->get('class');
+        $class = $request->get(DtoInterface::DTO_CLASS);
 
-        if ($class === $this->getClassEntity()) {
+        if ($class === $this->getClass()) {
 
-            $spamId     = $request->get('id');
+            $spamId     = $request->get('spamId');
             $active     = $request->get('active');
-            $deleted    = $request->get('is_deleted');
-            $domainName = $request->get('domain');
             $spamRecord = $request->get('spamRecord');
 
             if ($spamId) {
                 $this->setId($spamId);
             }
 
-            if ($active && $deleted) {
-                $this->setActiveToDelete();
-            }
-
-            if ($domainName) {
-                $this->setSpamRecord($domainName);
+            if ($active) {
+                $this->setActive($active);
             }
 
             if ($spamRecord) {
@@ -216,9 +209,61 @@ class SpamDto extends AbstractDto
 
         return $this;
     }
+
+    /**
+     * @return \Generator
+     */
+    public function genRequestConformityDto(?Request $request): ?\Generator
+    {
+        if ($request) {
+            $clone = clone $request;
+
+            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
+                $clone->attributes->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
+            }
+            if ($request->query->has(DtoInterface::DTO_CLASS)) {
+                $clone->query->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
+            }
+            if ($request->request->has(DtoInterface::DTO_CLASS)) {
+                $clone->request->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
+            }
+
+            yield $clone;
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public function genRequestRuleTypeDto(?Request $request): ?\Generator
+    {
+        if ($request) {
+            $clone = clone $request;
+
+            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
+                $clone->attributes->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
+            }
+            if ($request->query->has(DtoInterface::DTO_CLASS)) {
+                $clone->query->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
+            }
+            if ($request->request->has(DtoInterface::DTO_CLASS)) {
+                $clone->request->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
+            }
+
+            yield $clone;
+        }
+    }
 //endregion SECTION: Dto
 
 //region SECTION: Getters/Setters
+    /**
+     * @return string
+     */
+    public function getClassEntity(): string
+    {
+        return Spam::class;
+    }
+
     /**
      * @return string
      */
@@ -238,7 +283,7 @@ class SpamDto extends AbstractDto
     /**
      * @return ConformityDto
      */
-    public function getConformity()
+    public function getConformity(): ?ConformityDto
     {
         return $this->conformity;
     }
@@ -246,33 +291,9 @@ class SpamDto extends AbstractDto
     /**
      * @return RuleTypeDto
      */
-    public function getRuleType()
+    public function getRuleType(): ?RuleTypeDto
     {
         return $this->ruleType;
-    }
-
-    /**
-     * @param string $spamRecord
-     *
-     * @return SpamDto
-     */
-    public function setSpamRecord(string $spamRecord)
-    {
-        $this->spamRecord = $spamRecord;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $id
-     *
-     * @return SpamDto
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -280,7 +301,7 @@ class SpamDto extends AbstractDto
      *
      * @return SpamDto
      */
-    public function setConformity($conformity)
+    public function setConformity(ConformityDto $conformity): self
     {
         $this->conformity = $conformity;
 
@@ -292,12 +313,11 @@ class SpamDto extends AbstractDto
      *
      * @return SpamDto
      */
-    public function setRuleType($ruleType)
+    public function setRuleType(RuleTypeDto $ruleType): self
     {
         $this->ruleType = $ruleType;
 
         return $this;
     }
-
 //endregion Getters/Setters
 }

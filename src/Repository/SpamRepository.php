@@ -48,13 +48,13 @@ class SpamRepository extends EntityRepository
             $builder->andWhere('spam.id =  :id')
                 ->setParameter('id', $this->dto->getId());
         } else {
-            if ($this->dto && $this->dto->getRuleType() && $this->dto->getRuleType()->getType()) {
+            if ($this->dto && $this->dto->getRuleType() && $this->dto->getRuleType()->getFilterType()) {
                 $builder->leftJoin('spam.type', 'filterType')
                     ->andWhere('filterType.type = :filter')
-                    ->setParameter('filter', $this->dto->getRuleType()->getType());
+                    ->setParameter('filter', $this->dto->getRuleType()->getFilterType());
             }
 
-            if ($this->dto && $this->dto->isConformity() && $this->dto->getConformity() && $this->dto->getConformity()->getType()) {
+            if ($this->dto && $this->dto->getConformity() &&  $this->dto->getConformity()->getType()) {
                 $builder->leftJoin('spam.conformity', 'conformityType')
                     ->andWhere('conformityType.type = :conformity')
                     ->setParameter('conformity', $this->dto->getConformity()->getType());

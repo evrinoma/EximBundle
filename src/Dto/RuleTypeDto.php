@@ -5,7 +5,8 @@ namespace Evrinoma\EximBundle\Dto;
 
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
-use Evrinoma\EximBundle\Entity\Filter;
+use Evrinoma\UtilsBundle\Storage\StorageInterface;
+use Evrinoma\UtilsBundle\Storage\StorageTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -13,36 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class RuleTypeDto extends AbstractDto
+class RuleTypeDto extends AbstractDto implements StorageInterface
 {
+    use StorageTrait;
 //region SECTION: Fields
     /**
      * @var string
      */
-    private $type;
+    private $filterType;
 //endregion Fields
-
-//region SECTION: Protected
-    /**
-     * @return mixed
-     */
-    protected function getClassEntity():?string
-    {
-        return Filter::class;
-    }
-//endregion Protected
-
-//region SECTION: Public
-    /**
-     * @param $entity
-     *
-     * @return mixed
-     */
-    public function fillEntity($entity)
-    {
-        return $entity;
-    }
-//endregion Public
 
 //region SECTION: Dto
     /**
@@ -52,11 +32,11 @@ class RuleTypeDto extends AbstractDto
      */
     public function toDto($request):DtoInterface
     {
-        $class = $request->get('class');
+        $class = $request->get(DtoInterface::DTO_CLASS);
 
-        if ($class === $this->getClassEntity()) {
-            $filterType = $request->get('type');
-            $this->setType($filterType);
+        if ($class === $this->getClass()) {
+            $filterType = $request->get('filterType');
+            $this->setFilterType($filterType);
         }
 
         return $this;
@@ -67,19 +47,19 @@ class RuleTypeDto extends AbstractDto
     /**
      * @return mixed
      */
-    public function getType()
+    public function getFilterType()
     {
-        return $this->type;
+        return $this->filterType;
     }
 
     /**
-     * @param mixed $type
+     * @param mixed $filterType
      *
      * @return RuleTypeDto
      */
-    public function setType($type)
+    private function setFilterType($filterType)
     {
-        $this->type = $type;
+        $this->filterType = $filterType;
 
         return $this;
     }

@@ -2,9 +2,6 @@
 
 namespace Evrinoma\EximBundle\Dto;
 
-use Evrinoma\CommentBundle\Dto\CommentApiDto;
-use Evrinoma\CommentBundle\Dto\CommentDto;
-use Evrinoma\CommentBundle\Model\CommentModelInterface;
 use Evrinoma\DtoBundle\Annotation\Dtos;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;

@@ -647,14 +647,14 @@ final class EximApiController extends AbstractApiController
      *         required=true,
      *         @OA\Schema(
      *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\RuleTypeDto",
+     *           default="Evrinoma\EximBundle\Dto\SpamDto",
      *           readOnly=true
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="type",
+     *         name="filterType",
      *         in="query",
-     *         description="select spam conformity type",
+     *         description="select spam Filter type",
      *         @OA\Schema(
      *              type="array",
      *              @OA\Items(
@@ -665,9 +665,9 @@ final class EximApiController extends AbstractApiController
      *         style="form"
      *     ),
      *     @OA\Parameter(
-     *         name="type",
+     *         name="conformityType",
      *         in="query",
-     *         description="select spam conformity type",
+     *         description="select spam Conformity type",
      *         @OA\Schema(
      *              type="array",
      *              @OA\Items(
@@ -715,78 +715,6 @@ final class EximApiController extends AbstractApiController
         return $this->json($this->spamManager->setRestSuccessOk()->getConformity($spamDto)->toModel(), $this->spamManager->getRestStatus());
     }
 
-
-    /**
-     * @Rest\Post("/api/exim/spam/save", name="api_save_spam")
-     * @OA\Post(
-     *     tags={"spam"},
-     *     @OA\Parameter(
-     *         description="class",
-     *         in="query",
-     *         name="class",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\SpamDto",
-     *           readOnly=true
-     *         )
-     *     ),
-     *      @OA\Parameter(
-     *         description="id spam",
-     *         in="query",
-     *         name="id",
-     *         @OA\Schema(
-     *           type="string",
-     *           default=null,
-     *         )
-     *      ),
-     *      @OA\Parameter(
-     *         description="spam Record",
-     *         in="query",
-     *         name="spamRecord",
-     *         @OA\Schema(
-     *           type="string",
-     *           default=null,
-     *         )
-     *      ),
-     *      @OA\Parameter(
-     *         name="type",
-     *         in="query",
-     *         description="select spam filter type",
-     *         @OA\Schema(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\FilterType::class),
-     *              ),
-     *          ),
-     *         style="form"
-     *     ),
-     *      @OA\Parameter(
-     *         name="type",
-     *         in="query",
-     *         description="select spam conformity type",
-     *         @OA\Schema(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ConformityType::class),
-     *              ),
-     *          ),
-     *         style="form"
-     *     ),
-     * )
-     * @OA\Response(response=400,description="set ip and name domain")
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function spamRulesSaveAction()
-    {
-        $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
-
-        return $this->json($this->spamManager->setRestSuccessOk()->toSave($spamDto), $this->spamManager->getRestStatus());
-    }
-
     /**
      * @Rest\Get("/api/exim/spam/rules_type", name="api_spam_rules_type")
      * @OA\Get(tags={"spam"})
@@ -799,6 +727,43 @@ final class EximApiController extends AbstractApiController
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
         return $this->json($this->spamManager->setRestSuccessOk()->getType($spamDto)->getData(), $this->spamManager->getRestStatus());
+    }
+
+    /**
+     * @Rest\Post("/api/exim/spam/save", name="api_save_spam")
+     * @OA\Post(
+     *     tags={"spam"},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               example={
+     *                  "class":"Evrinoma\EximBundle\Dto\SpamDto",
+     *                  "spamId":"1",
+     *                  "active":"b",
+     *                  "spamRecord":".experthost.com",
+     *                  "filterType":"helo",
+     *                  "conformityType":"soft",
+     *               },
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\SpamDto"),
+     *               @OA\Property(property="spamId",type="string", description="id spam", default=""),
+     *               @OA\Property(property="active",type="string", description="status spam rule"),
+     *               @OA\Property(property="spamRecord",type="string", description="spam Record"),
+     *               @OA\Property(property="filterType",type="string", description="select spam Filter type"),
+     *               @OA\Property(property="conformityType",type="string", description="select spam Conformity type"),
+     *            )
+     *         )
+     *     )
+     * )
+     * @OA\Response(response=400,description="set spamRecord, filterType and conformityType domain")
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function spamRulesSaveAction()
+    {
+        $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
+
+        return $this->json($this->spamManager->setRestSuccessOk()->toSave($spamDto), $this->spamManager->getRestStatus());
     }
 //endregion Public
 }
