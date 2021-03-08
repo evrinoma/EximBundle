@@ -15,7 +15,6 @@ use Evrinoma\EximBundle\Manager\ServerManagerInterface;
 use Evrinoma\EximBundle\Manager\SpamManagerInterface;
 use Evrinoma\EximBundle\Vuetable\AdaptorVuetable;
 use Evrinoma\EximBundle\Vuetable\VuetableInterface;
-use Evrinoma\SettingsBundle\Dto\SettingsDto;
 use Evrinoma\UtilsBundle\Controller\AbstractApiController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use JMS\Serializer\SerializerInterface;
@@ -400,7 +399,7 @@ final class EximApiController extends AbstractApiController
      *         required=true,
      *         @OA\Schema(
      *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\DomainDto",
+     *           default="Evrinoma\EximBundle\Dto\LogSearchDto",
      *           readOnly=true
      *         )
      *     ),
@@ -462,7 +461,7 @@ final class EximApiController extends AbstractApiController
     {
         $logSearchDto = $this->factoryDto->setRequest($this->request)->createDto(LogSearchDto::class);
 
-        return $this->json(['settings' => $this->searchManager->setRestSuccessOk()->setDto($logSearchDto)->getSettings(), 'classEntity' => LogSearchDto::class], $this->searchManager->getRestStatus());
+        return $this->json(['settings' => $this->searchManager->setRestSuccessOk()->setDto($logSearchDto)->getSettings(), 'classDto' => LogSearchDto::class], $this->searchManager->getRestStatus());
     }
 
     /**
