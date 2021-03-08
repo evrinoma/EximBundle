@@ -34,8 +34,8 @@ class RuleTypeDto extends AbstractDto implements StorageInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 
-        if ($class === $this->getClass()) {
-            $filterType = $request->get('filterType');
+        $filterType = $request->get('filterType');
+        if ($filterType) {
             $this->setFilterType($filterType);
         }
 

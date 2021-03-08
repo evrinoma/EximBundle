@@ -169,7 +169,7 @@ final class DomainDto extends AbstractDto implements VuetableInterface, StorageI
             $perPage    = $request->get('per_page');
             $filter     = $request->get('filter');
             $domainName = $request->get('domain');
-            $id         = $request->get('domainId');
+            $id         = $request->get('id');
 
             if ($id !== null) {
                 $this->setId($id);
@@ -197,19 +197,14 @@ final class DomainDto extends AbstractDto implements VuetableInterface, StorageI
     public function genRequestServerDto(?Request $request): ?\Generator
     {
         if ($request) {
-            $clone = clone $request;
+            $server = $request->get('server');
+            if ($server) {
+                $newRequest                      = new Request();
+                $server[DtoInterface::DTO_CLASS] = ServerDto::class;
+                $newRequest->request->add($server);
 
-            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
-                $clone->attributes->add([DtoInterface::DTO_CLASS => ServerDto::class]);
+                yield $newRequest;
             }
-            if ($request->query->has(DtoInterface::DTO_CLASS)) {
-                $clone->query->add([DtoInterface::DTO_CLASS => ServerDto::class]);
-            }
-            if ($request->request->has(DtoInterface::DTO_CLASS)) {
-                $clone->request->add([DtoInterface::DTO_CLASS => ServerDto::class]);
-            }
-
-            yield $clone;
         }
     }
 

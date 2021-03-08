@@ -112,9 +112,8 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
         $class = $request->get(DtoInterface::DTO_CLASS);
 
         if ($class === $this->getClass()) {
-            $id      = $request->get('aclId');
+            $id      = $request->get('id');
             $active  = $request->get('active');
-            $deleted = $request->get('is_deleted');
             $email   = $request->get('email');
             $type    = $request->get('type');
 
@@ -122,8 +121,8 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
                 $this->setId($id);
             }
 
-            if ($active && $deleted) {
-                $this->setActiveToDelete();
+            if ($active) {
+                $this->setActive($active);
             }
 
             if ($email) {
@@ -144,19 +143,14 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
     public function genRequestDomainDto(?Request $request): ?\Generator
     {
         if ($request) {
-            $clone = clone $request;
+            $domain = $request->get('domain');
+            if ($domain) {
+                $newRequest                      = new Request();
+                $domain[DtoInterface::DTO_CLASS] = DomainDto::class;
+                $newRequest->request->add($domain);
 
-            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
-                $clone->attributes->add([DtoInterface::DTO_CLASS => DomainDto::class]);
+                yield $newRequest;
             }
-            if ($request->query->has(DtoInterface::DTO_CLASS)) {
-                $clone->query->add([DtoInterface::DTO_CLASS => DomainDto::class]);
-            }
-            if ($request->request->has(DtoInterface::DTO_CLASS)) {
-                $clone->request->add([DtoInterface::DTO_CLASS => DomainDto::class]);
-            }
-
-            yield $clone;
         }
     }
 //endregion SECTION: Dto

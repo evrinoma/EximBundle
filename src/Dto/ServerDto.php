@@ -82,7 +82,7 @@ class ServerDto extends AbstractDto implements EntityAdaptorInterface, StorageIn
 
             $ip   = $request->get('ip');
             $name = $request->get('hostname');
-            $id   = $request->get('serverId');
+            $id   = $request->get('id');
 
             if ($name) {
                 $this->setHostName($name);

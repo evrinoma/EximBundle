@@ -30,7 +30,7 @@ class ConformityDto extends AbstractDto implements StorageInterface
      *
      * @return ConformityDto
      */
-    private function setType(string $type)
+    private function setType($type)
     {
         $this->type = $type;
 
@@ -49,8 +49,10 @@ class ConformityDto extends AbstractDto implements StorageInterface
         $class = $request->get(DtoInterface::DTO_CLASS);
 
         if ($class === $this->getClass()) {
-            $type = $request->get('conformityType');
-            $this->setType($type);
+            $conformityType = $request->get('conformityType');
+            if ($conformityType) {
+                $this->setType($conformityType);
+            }
         }
 
         return $this;

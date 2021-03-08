@@ -190,7 +190,7 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
 
         if ($class === $this->getClass()) {
 
-            $spamId     = $request->get('spamId');
+            $spamId     = $request->get('id');
             $active     = $request->get('active');
             $spamRecord = $request->get('spamRecord');
 
@@ -216,19 +216,14 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
     public function genRequestConformityDto(?Request $request): ?\Generator
     {
         if ($request) {
-            $clone = clone $request;
+            $server = $request->get('conformity');
+            if ($server) {
+                $newRequest                      = new Request();
+                $server[DtoInterface::DTO_CLASS] = ConformityDto::class;
+                $newRequest->request->add($server);
 
-            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
-                $clone->attributes->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
+                yield $newRequest;
             }
-            if ($request->query->has(DtoInterface::DTO_CLASS)) {
-                $clone->query->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
-            }
-            if ($request->request->has(DtoInterface::DTO_CLASS)) {
-                $clone->request->add([DtoInterface::DTO_CLASS => ConformityDto::class]);
-            }
-
-            yield $clone;
         }
     }
 
@@ -238,19 +233,14 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
     public function genRequestRuleTypeDto(?Request $request): ?\Generator
     {
         if ($request) {
-            $clone = clone $request;
+            $server = $request->get('filter');
+            if ($server) {
+                $newRequest                      = new Request();
+                $server[DtoInterface::DTO_CLASS] = RuleTypeDto::class;
+                $newRequest->request->add($server);
 
-            if ($request->attributes->has(DtoInterface::DTO_CLASS)) {
-                $clone->attributes->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
+                yield $newRequest;
             }
-            if ($request->query->has(DtoInterface::DTO_CLASS)) {
-                $clone->query->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
-            }
-            if ($request->request->has(DtoInterface::DTO_CLASS)) {
-                $clone->request->add([DtoInterface::DTO_CLASS => RuleTypeDto::class]);
-            }
-
-            yield $clone;
         }
     }
 //endregion SECTION: Dto
