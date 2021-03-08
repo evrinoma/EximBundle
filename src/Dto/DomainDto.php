@@ -8,10 +8,11 @@ use Evrinoma\DtoBundle\Annotation\Dto;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Domain;
-use Evrinoma\UtilsBundle\Storage\StorageInterface;
-use Evrinoma\UtilsBundle\Storage\StorageTrait;
+use Evrinoma\EximBundle\Vuetable\ResetVuetableInterface;
 use Evrinoma\EximBundle\Vuetable\VuetableInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Storage\StorageInterface;
+use Evrinoma\UtilsBundle\Storage\StorageTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class DomainDto extends AbstractDto implements VuetableInterface, StorageInterface, EntityAdaptorInterface
+final class DomainDto extends AbstractDto implements VuetableInterface, StorageInterface, EntityAdaptorInterface, ResetVuetableInterface
 {
     use ActiveTrait;
     use StorageTrait;
@@ -39,13 +40,6 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
 //endregion Fields
 
 //region SECTION: Protected
-    /**
-     * @return string
-     */
-    public function getClassEntity(): string
-    {
-        return Domain::class;
-    }
 //endregion Protected
 
 //region SECTION: Public
@@ -54,11 +48,11 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
      *
      * @return Domain
      */
-    public function fillEntity($entity):void
+    public function fillEntity($entity): void
     {
         $entity
             ->setDomain($this->getDomainName())
-            ->setServer($this->getServer()->generatorEntity()->current())
+            ->setServer($this->getServerDto()->generatorEntity()->current())
             ->setActive();
     }
 
@@ -68,6 +62,20 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
     public function isValidDomainName()
     {
         return $this->domainName && (preg_match("/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]/", $this->domainName) === 1);
+    }
+
+    public function resetPage(): ResetVuetableInterface
+    {
+        $this->setPage();
+
+        return $this;
+    }
+
+    public function resetPerPage(): ResetVuetableInterface
+    {
+        $this->setPerPage();
+
+        return $this;
     }
 //endregion Public
 
@@ -216,6 +224,14 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
 
 //region SECTION: Getters/Setters
     /**
+     * @return string
+     */
+    public function getClassEntity(): string
+    {
+        return Domain::class;
+    }
+
+    /**
      * @return mixed
      */
     public function getPage()
@@ -253,18 +269,6 @@ class DomainDto extends AbstractDto implements VuetableInterface, StorageInterfa
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $hostNameServer
-     *
-     * @return DomainDto
-     */
-    public function setHostNameServer($hostNameServer = null)
-    {
-        $this->hostNameServer = $hostNameServer;
-
-        return $this;
     }
 //endregion Getters/Setters
 }

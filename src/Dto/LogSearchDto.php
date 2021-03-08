@@ -2,8 +2,13 @@
 
 namespace Evrinoma\EximBundle\Dto;
 
+use Evrinoma\CommentBundle\Dto\CommentApiDto;
+use Evrinoma\CommentBundle\Dto\CommentDto;
+use Evrinoma\CommentBundle\Model\CommentModelInterface;
+use Evrinoma\DtoBundle\Annotation\Dtos;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
+use Evrinoma\SettingsBundle\Dto\SettingsDto;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,33 +22,15 @@ class LogSearchDto extends AbstractDto
     use ActiveTrait;
 
 //region SECTION: Fields
-    private   $searchString;
-    private   $searchFile = [];
+    private $searchString;
+    /**
+     * @Dtos(class="Evrinoma\SettingsBundle\Dto\SettingsDto", generator="genRequestSettingsDto", add="addSettingsDto")
+     * @var SettingsDto []
+     */
+    private $searchFiles = [];
 //endregion Fields
 
 //region SECTION: Public
-    /**
-     * @param Object $entity
-     *
-     * @return mixed
-     */
-    public function fillEntity($entity)
-    {
-        $entity->setActive();
-
-        return $entity;
-    }
-
-    /**
-     * DtoAdapter(adaptors={
-     *     DtoAdapterItem(class="Evrinoma\SettingsBundle\Dto\SettingsDto",method="setClassSettingsEntity")
-     * })
-     */
-    public function getClass():string
-    {
-        return parent::getClass();
-    }
-
     /**
      * @return int
      */
@@ -54,9 +41,23 @@ class LogSearchDto extends AbstractDto
 
     public function hasFile($fileName)
     {
-        return (count($this->searchFile) === 0 || array_key_exists($fileName, $this->searchFile));
+        return (count($this->searchFiles) === 0 || array_key_exists($fileName, $this->searchFiles));
     }
 //endregion Public
+
+//region SECTION: Private
+    /**
+     * @param string $searchString
+     *
+     * @return LogSearchDto
+     */
+    private function setSearchString(string $searchString): self
+    {
+        $this->searchString = $searchString;
+
+        return $this;
+    }
+//endregion Private
 
 //region SECTION: Dto
     /**
@@ -64,32 +65,67 @@ class LogSearchDto extends AbstractDto
      *
      * @return DtoInterface
      */
-    public function toDto($request):DtoInterface
+    public function toDto($request): DtoInterface
     {
         $searchString = $request->get('searchString');
-        $searchFile   = $request->get('searchFile');
 
         if ($searchString) {
             $this->setSearchString($searchString);
-        }
-
-        if ($searchFile) {
-            $this->setSearchFile($searchFile);
         }
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @param SettingsDto $dto
+     *
+     * @return $this
      */
-    protected function getClassEntity():?string
+    public function addSettingsDto(SettingsDto $dto): self
     {
-        return static::class;
-    }
-//endregion SECTION: Dto
+        $name = $dto->getFile();
 
-//region SECTION: Getters/Setters
+        if ($name) {
+            $this->searchFiles[$name] = $dto;
+        } else {
+            $this->searchFiles[] = $dto;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Generator
+     */
+    public function genRequestSettingsDto(?Request $request): ?\Generator
+    {
+        if ($request) {
+            $searchFiles = $request->get('searchFiles');
+            if ($searchFiles) {
+                foreach ($searchFiles as $searchFile) {
+                    $request = new Request();
+                    if (is_array($searchFile)) {
+                        $params = $searchFile;
+                    } else {
+                        $params['file'] = $searchFile;
+                    }
+                    $params[DtoInterface::DTO_CLASS] = SettingsDto::class;
+                    $request->request->add($params);
+
+                    yield $request;
+                }
+            }
+        }
+    }
+
+    /**
+     * @return SettingsDto[]
+     */
+    public function getSettingsDto(): array
+    {
+        return $this->searchFiles;
+    }
+
     /**
      * @return mixed
      */
@@ -97,37 +133,7 @@ class LogSearchDto extends AbstractDto
     {
         return $this->searchString;
     }
+//endregion SECTION: Dto
 
-    /**
-     * @return mixed
-     */
-    public function getSearchFile()
-    {
-        return $this->searchFile;
-    }
 
-    /**
-     * @param mixed $searchString
-     *
-     * @return LogSearchDto
-     */
-    public function setSearchString($searchString)
-    {
-        $this->searchString = $searchString;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $searchFile
-     *
-     * @return LogSearchDto
-     */
-    public function setSearchFile($searchFile)
-    {
-        $this->searchFile = array_flip(preg_split('/,/', $searchFile, null, PREG_SPLIT_NO_EMPTY));
-
-        return $this;
-    }
-//endregion Getters/Setters
 }

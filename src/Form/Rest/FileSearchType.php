@@ -2,6 +2,7 @@
 
 namespace Evrinoma\EximBundle\Form\Rest;
 
+use Evrinoma\EximBundle\Dto\LogSearchDto;
 use Evrinoma\EximBundle\Std\FileStd;
 use Evrinoma\SettingsBundle\Dto\SettingsDto;
 use Evrinoma\SettingsBundle\Manager\SettingsManagerInterface;
@@ -42,7 +43,7 @@ class FileSearchType extends AbstractType
             $fileList = [];
             $class    = $options->offsetGet(self::REST_CLASS_ENTITY);
             if ($class) {
-                foreach ($this->settingsManager->getSettings(new SettingsDto()) as $file) {
+                foreach ($this->settingsManager->getSettings(new LogSearchDto()) as $file) {
                     $data = $file->getData();
                     if ($data instanceof FileStd) {
                         /** @var $data FileStd */

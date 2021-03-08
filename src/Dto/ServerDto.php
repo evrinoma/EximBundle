@@ -7,6 +7,8 @@ use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Server;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
+use Evrinoma\UtilsBundle\Storage\StorageInterface;
+use Evrinoma\UtilsBundle\Storage\StorageTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -14,9 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class ServerDto extends AbstractDto implements EntityAdaptorInterface
+class ServerDto extends AbstractDto implements EntityAdaptorInterface, StorageInterface
 {
     use ActiveTrait;
+    use StorageTrait;
 
 //region SECTION: Fields
     private $ip;
@@ -79,7 +82,7 @@ class ServerDto extends AbstractDto implements EntityAdaptorInterface
 
             $ip   = $request->get('ip');
             $name = $request->get('hostname');
-            $id   = $request->get('id_server');
+            $id   = $request->get('serverId');
 
             if ($name) {
                 $this->setHostName($name);

@@ -168,7 +168,7 @@ final class EximApiController extends AbstractApiController
      * @Rest\Post("/api/exim/acl/save", name="api_acl_save")
      * @OA\Post(
      *      tags={"acl"},
-     *     description="the method perform save acl",
+     *      description="the method perform save acl",
      *      @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
@@ -306,11 +306,7 @@ final class EximApiController extends AbstractApiController
         $domainDto = $this->factoryDto->setRequest($this->request)->createDto(DomainDto::class);
         $this->domainManager->get($domainDto);
 
-        $response = (new AdaptorVuetable($this->domainManager, $domainDto, $this->domainManager->getData()))->toVuetable();
-
-        $this->domainManager->setRestSuccessOk();
-
-        return $this->json($response, $this->domainManager->getRestStatus());
+        return $this->json((new AdaptorVuetable($this->domainManager, $domainDto, $this->domainManager->getData()))->toVuetable(), $this->domainManager->setRestSuccessOk()->getRestStatus());
     }
 
     /**
@@ -331,7 +327,7 @@ final class EximApiController extends AbstractApiController
      *     @OA\Parameter(
      *         description="id record",
      *         in="query",
-     *         name="id",
+     *         name="domainId",
      *         required=true,
      *         @OA\Schema(
      *           type="integer",
@@ -355,43 +351,23 @@ final class EximApiController extends AbstractApiController
     /**
      * @Rest\Post("/api/exim/domain/save", name="api_save_domain")
      * @OA\Post(
-     *     tags={"domain"}),
-     * @OA\Parameter(
-     *         description="class",
-     *         in="query",
-     *         name="class",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\DomainDto",
-     *           readOnly=true
+     *      tags={"domain"}),
+     *      description="the method perform save domain",
+     * @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               example={
+     *                  "class":"Evrinoma\EximBundle\Dto\DomainDto",
+     *                  "hostname":"email.ite-ng.ru",
+     *                  "domain":"ite-ng.ru",
+     *               },
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\DomainDto"),
+     *               @OA\Property(property="hostname",type="string", description="Select hostname"),
+     *               @OA\Property(property="domain",type="string", description="Mail name server"),
+     *            )
      *         )
      *     ),
-     * @OA\Parameter(
-     *         name="hostname",
-     *         in="query",
-     *         description="This is a parameter",
-     *         required=true,
-     *         @OA\Schema(
-     *              type="array",
-     *              @OA\Items(
-     *                  type="string",
-     *                  ref=@Model(type=Evrinoma\EximBundle\Form\Rest\ServerType::class),
-     *              ),
-     *          ),
-     *         style="form"
-     *     ),
-     * @OA\Parameter(
-     *         description="Mail name server",
-     *         in="query",
-     *         name="domain",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *           default="ite-ng.ru",
-     *         )
-     *     )
-     * )
      * @OA\Response(response=200,description="Returns the rewards of default generated domain",
      *     @OA\Schema(
      *        type="object",
@@ -439,7 +415,7 @@ final class EximApiController extends AbstractApiController
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="searchFile",
+     *         name="searchFiles[]",
      *         in="query",
      *         description="search there",
      *         @OA\Schema(
@@ -497,15 +473,15 @@ final class EximApiController extends AbstractApiController
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *               example={"classEntity":"Evrinoma\EximBundle\Dto\LogSearchDto","settings":{{"id":"41","active":"b"},{"id":"42","active":"d"},{"id":"43","active":"a"}}},
+     *               example={"class":"Evrinoma\EximBundle\Dto\LogSearchDto","searchFiles":{{"fileId":"41","active":"b"},{"fileId":"42","active":"d"},{"fileId":"43","active":"a"}}},
      *               type="object",
-     *               @OA\Property(property="classEntity",type="string"),
+     *               @OA\Property(property="class",type="string"),
      *               @OA\Property(
-     *                  property="settings",
+     *                  property="searchFiles",
      *                  type="array",
      *                  @OA\Items(
      *                      type="object",
-     *                      @OA\Property(property="id",type="string"),
+     *                      @OA\Property(property="fileId",type="string"),
      *                      @OA\Property(property="active",type="string")
      *                   )
      *               )
@@ -520,7 +496,7 @@ final class EximApiController extends AbstractApiController
      */
     public function logSearchSettingsSaveAction()
     {
-        $settingsDto = $this->factoryDto->setRequest($this->request)->createDto(SettingsDto::class);
+        $settingsDto = $this->factoryDto->setRequest($this->request)->createDto(LogSearchDto::class);
 
         return $this->json(['settings' => $this->searchManager->setRestSuccessOk()->setDto($settingsDto)->saveSettings()], $this->searchManager->getRestStatus());
     }
@@ -528,7 +504,27 @@ final class EximApiController extends AbstractApiController
 
     /**
      * @Rest\Get("/api/exim/server/server", name="api_server")
-     * @OA\Get(tags={"server"})
+     * @OA\Get(tags={"server"},
+     *       @OA\Parameter(
+     *         description="class",
+     *         in="query",
+     *         name="class",
+     *         required=true,
+     *         @OA\Schema(
+     *           type="string",
+     *           default="Evrinoma\EximBundle\Dto\ServerDto",
+     *           readOnly=true
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         description="ID record",
+     *         in="query",
+     *         name="serverId",
+     *         @OA\Schema(
+     *           type="string",
+     *         )
+     *     )
+     * )
      * @OA\Response(response=200,description="Returns the rewards of all servers")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -602,43 +598,21 @@ final class EximApiController extends AbstractApiController
      * @Rest\Post("/api/exim/server/save", name="api_save_server")
      * @OA\Post(
      *      tags={"server"},
-     *      @OA\Parameter(
-     *         description="class",
-     *         in="query",
-     *         name="class",
-     *         required=true,
-     *         @OA\Schema(
-     *           type="string",
-     *           default="Evrinoma\EximBundle\Dto\ServerDto",
-     *           readOnly=true
-     *         )
-     *     ),
-     *      @OA\Parameter(
-     *         description="id server",
-     *         in="query",
-     *         name="id",
-     *         @OA\Schema(
-     *           type="string",
-     *           default=null,
-     *         )
-     *     ),
-     *      @OA\Parameter(
-     *         description="ip server",
-     *         in="query",
-     *         name="ip",
-     *         @OA\Schema(
-     *           type="string",
-     *           pattern="\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}",
-     *           default="172.20.1.4",
-     *         )
-     *     ),
-     *      @OA\Parameter(
-     *         description="hostname server",
-     *         in="query",
-     *         name="hostname",
-     *         @OA\Schema(
-     *           type="string",
-     *           default="mail.ite-ng.ru",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               example={
+     *                  "class":"Evrinoma\EximBundle\Dto\ServerDto",
+     *                  "serverId":"2",
+     *                  "ip":"172.20.1.4",
+     *                  "hostname":"mail.ite-ng.ru",
+     *               },
+     *               @OA\Property(property="class",type="string", description="class", default="Evrinoma\EximBundle\Dto\ServerDto"),
+     *               @OA\Property(property="serverId",type="string", description="id server", default=""),
+     *               @OA\Property(property="ip",type="string", description="ip server"),
+     *               @OA\Property(property="hostname",type="string", description="hostname server"),
+     *            )
      *         )
      *     )
      * )

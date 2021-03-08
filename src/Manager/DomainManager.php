@@ -55,7 +55,7 @@ final class DomainManager extends AbstractEntityManager implements DomainManager
     {
         $entity = null;
 
-        if ($domainDto->isValidDomainName() && $domainDto->getServer()->isValidHostName()) {
+        if ($domainDto->isValidDomainName() && $domainDto->getServerDto()->isValidHostName()) {
             $criteria = $this->getCriteria();
             if ($domainDto->getId()) {
                 $criteria->andWhere($criteria->expr()->eq('id', $domainDto->getId()));
@@ -65,10 +65,15 @@ final class DomainManager extends AbstractEntityManager implements DomainManager
                 );
             }
             $existDomain = $this->repository->matching($criteria);
-            if ($domainDto->getServer()->getEntitys() === null) {
-                $domainDto->getServer()->setEntitys($this->serverManager->get($domainDto->getServer())->getData());
+            if (!$domainDto->getServerDto()->hasEntities()) {
+                $domainDto->getServerDto()->setEntities($this->serverManager->get($domainDto->getServerDto())->getData());
             }
-            $entity = $this->save($domainDto, $existDomain->count() ? $existDomain->first() : new Domain());
+            if (!$domainDto->getServerDto()->hasEntities()) {
+                $this->setRestClientErrorBadRequest();
+                $entity = 'сервер не найден';
+            } else {
+                $entity = $this->save($domainDto, $existDomain->count() ? $existDomain->first() : new Domain());
+            }
         } else {
             $this->setRestClientErrorBadRequest();
         }
@@ -94,24 +99,23 @@ final class DomainManager extends AbstractEntityManager implements DomainManager
         return $this;
     }
 
-
-    /**
+   /**
      * если фильтр задан то возвращаем число всех найденных записей
      *
-     * @param DomainDto|null $domainDto
+     * @param null $criteria
      *
      * @return int
      */
-    public function getCount($domainDto = null)
+    public function getCount($criteria = null)
     {
         $count = 0;
-        if ($domainDto) {
-            $dtoClone = clone $domainDto;
-            $dtoClone->setPerPage()->setPage();
-            $count = $domainDto ? count($this->repository->setDto($dtoClone)->findDomain()) : 0;
+        if ($criteria instanceof DomainDto) {
+            $dtoClone = clone $criteria;
+            $dtoClone->resetPerPage()->resetPage();
+            $count = count($this->repository->setDto($dtoClone)->findDomain());
         }
 
-        return $count;
+        return  $count;
     }
 
     /**

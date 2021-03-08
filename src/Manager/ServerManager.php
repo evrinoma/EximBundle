@@ -79,6 +79,9 @@ final class ServerManager extends AbstractEntityManager implements ServerManager
     {
         if ($serverDto) {
             $criteria = $this->getCriteria();
+            if ($serverDto->getId()) {
+                $criteria->andWhere($criteria->expr()->eq('id', $serverDto->getId()));
+            }
             if ($serverDto->getIp()) {
                 $criteria->andWhere(
                     $criteria->expr()->eq('ip', $serverDto->getIp())
