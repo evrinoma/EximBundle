@@ -5,10 +5,8 @@ namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\AclModel;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\EximBundle\Model\MailTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
-use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\VirtualProperty;
@@ -22,7 +20,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  */
 class Acl
 {
-    use ClassEntityTrait, ActiveTrait, MailTrait;
+    use ActiveTrait, MailTrait;
 
 //region SECTION: Fields
     /**

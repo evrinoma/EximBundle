@@ -3,9 +3,8 @@
 namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
+use Evrinoma\EximBundle\Dto\DomainDto;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
-use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\VirtualProperty;
@@ -18,7 +17,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  */
 class Domain
 {
-    use ClassEntityTrait, ActiveTrait;
+    use ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -48,8 +47,6 @@ class Domain
 
 //region SECTION: Getters/Setters
     /**
-     * @VirtualProperty
-     * @SerializedName("domainId")
      * @return int
      */
     public function getId(): int
@@ -57,13 +54,14 @@ class Domain
         return $this->id;
     }
 
-//    /**
-//     * @return int
-//     */
-//    public function getDomainId(): int
-//    {
-//        return $this->getId();
-//    }
+    /**
+     * @VirtualProperty()
+     * @return string
+     */
+    public function getClass()
+    {
+        return DomainDto::class;
+    }
 
     /**
      * @return string

@@ -4,9 +4,9 @@ namespace Evrinoma\EximBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Conformity
@@ -17,7 +17,7 @@ use Evrinoma\UtilsBundle\Entity\IdTrait;
  */
 class Conformity
 {
-    use IdTrait, ClassEntityTrait, ActiveTrait;
+    use IdTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -30,6 +30,7 @@ class Conformity
     protected $id;
 
     /**
+     * @SerializedName("conformityType")
      * @var string|null
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)

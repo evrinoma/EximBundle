@@ -2,10 +2,9 @@
 namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
-
+use JMS\Serializer\Annotation\SerializedName;
 /**
  * Class Spam
  *
@@ -15,7 +14,7 @@ use Evrinoma\UtilsBundle\Entity\IdTrait;
  */
 class Filter
 {
-    use IdTrait, ClassEntityTrait, ActiveTrait;
+    use IdTrait, ActiveTrait;
 
     public const FILTER_BURN = 'burn';
     public const FILTER_IP = 'ip';
@@ -30,6 +29,7 @@ class Filter
     protected $id;
 
     /**
+     * @SerializedName("filterType")
      * @var string|null
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)

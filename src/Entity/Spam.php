@@ -3,10 +3,9 @@
 namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
-
+use JMS\Serializer\Annotation\SerializedName;
 /**
  * Class Spam
  *
@@ -16,7 +15,7 @@ use Evrinoma\UtilsBundle\Entity\IdTrait;
  */
 class Spam
 {
-    use IdTrait, ClassEntityTrait, ActiveTrait;
+    use IdTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
@@ -30,14 +29,14 @@ class Spam
 
     /**
      * @var Filter
-     *
+     * @SerializedName("filter")
      * @ORM\ManyToOne(targetEntity="Filter", inversedBy="id", cascade={"all"})
      */
     private $type;
 
     /**
      * @var Conformity
-     *
+     * @SerializedName("conformity")
      * @ORM\ManyToOne(targetEntity="Conformity", inversedBy="id", cascade={"all"})
      */
     private $conformity;

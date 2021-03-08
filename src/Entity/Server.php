@@ -4,7 +4,6 @@ namespace Evrinoma\EximBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
-use Evrinoma\EximBundle\Model\ClassEntityTrait;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
 
@@ -16,7 +15,7 @@ use Evrinoma\UtilsBundle\Entity\IdTrait;
  */
 class Server
 {
-    use IdTrait, ClassEntityTrait, ActiveTrait;
+    use IdTrait, ActiveTrait;
 
 //region SECTION: Fields
     /**
