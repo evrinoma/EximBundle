@@ -199,7 +199,7 @@ final class DomainDto extends AbstractDto implements VuetableInterface, StorageI
         if ($request) {
             $server = $request->get('server');
             if ($server) {
-                $newRequest                      = new Request();
+                $newRequest                      = $this->getCloneRequest();
                 $server[DtoInterface::DTO_CLASS] = ServerDto::class;
                 $newRequest->request->add($server);
 

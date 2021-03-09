@@ -218,7 +218,7 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
         if ($request) {
             $server = $request->get('conformity');
             if ($server) {
-                $newRequest                      = new Request();
+                $newRequest                      = $this->getCloneRequest();
                 $server[DtoInterface::DTO_CLASS] = ConformityDto::class;
                 $newRequest->request->add($server);
 
@@ -235,7 +235,7 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
         if ($request) {
             $server = $request->get('filter');
             if ($server) {
-                $newRequest                      = new Request();
+                $newRequest                      = $this->getCloneRequest();
                 $server[DtoInterface::DTO_CLASS] = RuleTypeDto::class;
                 $newRequest->request->add($server);
 

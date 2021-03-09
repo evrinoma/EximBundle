@@ -145,7 +145,7 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
         if ($request) {
             $domain = $request->get('domain');
             if ($domain) {
-                $newRequest                      = new Request();
+                $newRequest                      = $this->getCloneRequest();
                 $domain[DtoInterface::DTO_CLASS] = DomainDto::class;
                 $newRequest->request->add($domain);
 
