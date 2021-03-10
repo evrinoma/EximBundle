@@ -10,6 +10,7 @@ use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Domain;
 use Evrinoma\EximBundle\Vuetable\ResetVuetableInterface;
 use Evrinoma\EximBundle\Vuetable\VuetableInterface;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Storage\StorageInterface;
 use Evrinoma\UtilsBundle\Storage\StorageTrait;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-final class DomainDto extends AbstractDto implements VuetableInterface, StorageInterface, EntityAdaptorInterface, ResetVuetableInterface
+final class DomainDto extends AbstractDto implements VuetableInterface, StorageInterface, EntityAdaptorInterface, ResetVuetableInterface, ActiveInterface
 {
     use ActiveTrait;
     use StorageTrait;

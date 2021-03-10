@@ -8,6 +8,7 @@ use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Filter;
 use Evrinoma\EximBundle\Entity\Spam;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Storage\StorageInterface;
 use Evrinoma\UtilsBundle\Storage\StorageTrait;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInterface
+class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInterface, ActiveInterface
 {
     use StorageTrait;
 

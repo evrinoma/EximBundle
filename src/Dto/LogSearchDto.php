@@ -6,6 +6,7 @@ use Evrinoma\DtoBundle\Annotation\Dtos;
 use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\SettingsBundle\Dto\SettingsDto;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class LogSearchDto extends AbstractDto
+class LogSearchDto extends AbstractDto implements ActiveInterface
 {
     use ActiveTrait;
 

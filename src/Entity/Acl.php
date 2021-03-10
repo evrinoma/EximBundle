@@ -6,6 +6,7 @@ namespace Evrinoma\EximBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Evrinoma\EximBundle\Model\AclModel;
 use Evrinoma\EximBundle\Model\MailTrait;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Type;
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  * @ORM\Table(name="mail_acl")
  * @ORM\Entity(repositoryClass="Evrinoma\EximBundle\Repository\AclRepository")
  */
-class Acl
+class Acl implements ActiveInterface
 {
     use ActiveTrait, MailTrait;
 

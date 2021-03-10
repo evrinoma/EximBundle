@@ -3,6 +3,7 @@
 namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\SerializedName;
@@ -13,7 +14,7 @@ use JMS\Serializer\Annotation\SerializedName;
  * @ORM\Table(name="mail_spam_rule")
  * @ORM\Entity(repositoryClass="Evrinoma\EximBundle\Repository\SpamRepository")
  */
-class Spam
+class Spam implements ActiveInterface
 {
     use IdTrait, ActiveTrait;
 

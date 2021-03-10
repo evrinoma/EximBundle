@@ -335,7 +335,15 @@ final class EximApiController extends AbstractApiController
     {
         $domainDto = $this->factoryDto->setRequest($this->request)->createDto(DomainDto::class);
 
-        $this->domainManager->setRestSuccessOk()->get($domainDto)->lockEntitys();
+        $em   = $this->getDoctrine()->getManager();
+        $domainManager = $this->domainManager;
+
+        $em->transactional(
+            function () use ($domainDto, $domainManager) {
+                $domainManager->setRestSuccessOk()->get($domainDto)->lockEntitys();
+            }
+        );
+
 
         return $this->json(['message' => 'the Domain was delete successFully'], $this->domainManager->getRestStatus());
     }
@@ -581,7 +589,14 @@ final class EximApiController extends AbstractApiController
     {
         $serverDto = $this->factoryDto->setRequest($this->request)->createDto(ServerDto::class);
 
-        $this->serverManager->setRestSuccessOk()->get($serverDto)->lockEntitys();
+        $em   = $this->getDoctrine()->getManager();
+        $serverManager = $this->serverManager;
+
+        $em->transactional(
+            function () use ($serverDto, $serverManager) {
+                $serverManager->setRestSuccessOk()->get($serverDto)->lockEntitys();
+            }
+        );
 
         return $this->json(['message' => 'the Domain was delete successFully'], $this->serverManager->getRestStatus());
     }
@@ -796,7 +811,14 @@ final class EximApiController extends AbstractApiController
     {
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
-        $this->spamManager->setRestSuccessOk()->get($spamDto)->lockEntitys();
+        $em   = $this->getDoctrine()->getManager();
+        $spamManager = $this->spamManager;
+
+        $em->transactional(
+            function () use ($spamDto, $spamManager) {
+                $spamManager->setRestSuccessOk()->get($spamDto)->lockEntitys();
+            }
+        );
 
         return $this->json(['message' => 'the Spam rule was delete successFully'], $this->spamManager->getRestStatus());
     }

@@ -9,6 +9,7 @@ use Evrinoma\DtoBundle\Dto\AbstractDto;
 use Evrinoma\DtoBundle\Dto\DtoInterface;
 use Evrinoma\EximBundle\Entity\Acl;
 use Evrinoma\EximBundle\Model\MailTrait;
+use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Storage\StorageInterface;
 use Evrinoma\UtilsBundle\Storage\StorageTrait;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package Evrinoma\EximBundle\Dto
  */
-class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInterface
+class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInterface, ActiveInterface
 {
     use ActiveTrait;
     use MailTrait;
