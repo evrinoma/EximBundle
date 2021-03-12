@@ -482,7 +482,7 @@ export default {
     },
     doAdd() {
       let data = {
-        filter: this.aclModelSelect,
+        type: this.aclModelSelect,
         email: this.recordText,
         domain: this.domains[this.domainSelect],
         class: this.aclClass
