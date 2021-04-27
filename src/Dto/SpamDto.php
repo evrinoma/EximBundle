@@ -69,18 +69,25 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
     {
         $valid = false;
         if ($this->spamRecord) {
-            if ($this->getRuleType() && $this->getRuleType()->hasSingleEntity()) {
-                /** @var Filter $entity */
-                $entity = $this->getRuleType()->generatorEntity()->current();
-                if ($entity->isPatternBurn() && $this->isBurn()) {
-                    $valid = true;
-                }
-                if ($entity->isPatternIP() && $this->isRange()) {
-                    $this->setSpamRecord($this->range);
-                    $valid = true;
-                }
-                if ($entity->isPattern() && $this->isHostName()) {
-                    $valid = true;
+            if ($this->getRuleType() && $this->getRuleType()->getFilterType() && $this->getRuleType()->hasPattern()) {
+                $pattern = $this->getRuleType()->getPattern();
+                switch ($pattern) {
+                    case Filter::PATTERN_BURN :
+                        if ($this->isBurn()) {
+                            $valid = true;
+                        }
+                        break;
+                    case Filter::PATTERN_IP :
+                        if ($this->isRange()) {
+                            $this->setSpamRecord($this->range);
+                            $valid = true;
+                        }
+                        break;
+                    case Filter::PATTERN_EMPTY :
+                        if ($this->isHostName()) {
+                            $valid = true;
+                        }
+                        break;
                 }
             }
         }
@@ -185,7 +192,7 @@ class SpamDto extends AbstractDto implements StorageInterface, EntityAdaptorInte
      *
      * @return DtoInterface
      */
-    public function toDto($request): DtoInterface
+    public function toDto(Request $request): DtoInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 

@@ -108,7 +108,7 @@ class AclDto extends AbstractDto implements StorageInterface, EntityAdaptorInter
      *
      * @return DtoInterface
      */
-    public function toDto($request): DtoInterface
+    public function toDto(Request $request): DtoInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 

@@ -75,7 +75,7 @@ class ServerDto extends AbstractDto implements EntityAdaptorInterface, StorageIn
      *
      * @return DtoInterface
      */
-    public function toDto($request):DtoInterface
+    public function toDto(Request $request):DtoInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 

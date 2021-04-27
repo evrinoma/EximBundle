@@ -63,7 +63,7 @@ class LogSearchDto extends AbstractDto implements ActiveInterface
      *
      * @return DtoInterface
      */
-    public function toDto($request): DtoInterface
+    public function toDto(Request $request): DtoInterface
     {
         $searchString = $request->get('searchString');
 

@@ -17,12 +17,53 @@ use Symfony\Component\HttpFoundation\Request;
 class RuleTypeDto extends AbstractDto implements StorageInterface
 {
     use StorageTrait;
+
 //region SECTION: Fields
     /**
      * @var string
      */
     private $filterType;
+    /**
+     * @var string
+     */
+    private $pattern;
 //endregion Fields
+
+//region SECTION: Public
+    /**
+     * @return bool
+     */
+    public function hasPattern(): bool
+    {
+        return $this->pattern !== null;
+    }
+//endregion Public
+
+//region SECTION: Private
+    /**
+     * @param string $filterType
+     *
+     * @return RuleTypeDto
+     */
+    private function setFilterType(string $filterType): self
+    {
+        $this->filterType = $filterType;
+
+        return $this;
+    }
+
+    /**
+     * @param string $pattern
+     *
+     * @return RuleTypeDto
+     */
+    private function setPattern(string $pattern): self
+    {
+        $this->pattern = $pattern;
+
+        return $this;
+    }
+//endregion Private
 
 //region SECTION: Dto
     /**
@@ -30,13 +71,20 @@ class RuleTypeDto extends AbstractDto implements StorageInterface
      *
      * @return DtoInterface
      */
-    public function toDto($request):DtoInterface
+    public function toDto(Request $request): DtoInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 
-        $filterType = $request->get('filterType');
-        if ($filterType) {
-            $this->setFilterType($filterType);
+
+        if ($class === $this->getClass()) {
+            $filterType = $request->get('filterType');
+            $pattern    = $request->get('pattern');
+            if ($filterType) {
+                $this->setFilterType($filterType);
+            }
+            if (!is_null($pattern)) {
+                $this->setPattern($pattern);
+            }
         }
 
         return $this;
@@ -45,23 +93,19 @@ class RuleTypeDto extends AbstractDto implements StorageInterface
 
 //region SECTION: Getters/Setters
     /**
-     * @return mixed
+     * @return string
      */
-    public function getFilterType()
+    public function getFilterType(): string
     {
         return $this->filterType;
     }
 
     /**
-     * @param mixed $filterType
-     *
-     * @return RuleTypeDto
+     * @return string
      */
-    private function setFilterType($filterType)
+    public function getPattern(): string
     {
-        $this->filterType = $filterType;
-
-        return $this;
+        return $this->pattern;
     }
 //endregion Getters/Setters
 }

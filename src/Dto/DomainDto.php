@@ -160,7 +160,7 @@ final class DomainDto extends AbstractDto implements VuetableInterface, StorageI
      *
      * @return DtoInterface
      */
-    public function toDto($request): DtoInterface
+    public function toDto(Request $request): DtoInterface
     {
         $class = $request->get(DtoInterface::DTO_CLASS);
 
