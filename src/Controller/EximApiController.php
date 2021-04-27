@@ -340,7 +340,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($domainDto, $domainManager) {
-                $domainManager->setRestSuccessOk()->get($domainDto)->lockEntitys();
+                $domainManager->setRestSuccessOk()->get($domainDto)->lockEntities();
             }
         );
 
@@ -594,7 +594,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($serverDto, $serverManager) {
-                $serverManager->setRestSuccessOk()->get($serverDto)->lockEntitys();
+                $serverManager->setRestSuccessOk()->get($serverDto)->lockEntities();
             }
         );
 
@@ -816,7 +816,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($spamDto, $spamManager) {
-                $spamManager->setRestSuccessOk()->get($spamDto)->lockEntitys();
+                $spamManager->setRestSuccessOk()->get($spamDto)->lockEntities();
             }
         );
 
