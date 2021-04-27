@@ -37,10 +37,9 @@ final class SpamManager extends AbstractEntityManager implements SpamManagerInte
      */
     public function toSave(SpamDto $spamDto)
     {
-        $spamDto->getRuleType()->setEntities($this->getType($spamDto)->getData());
-        $spamDto->getConformity()->setEntities($this->getConformity($spamDto)->getData());
-
         if ($spamDto->isValid()) {
+            $spamDto->getRuleType()->setEntities($this->getType($spamDto)->getData());
+            $spamDto->getConformity()->setEntities($this->getConformity($spamDto)->getData());
             $entity = $this->repository->setDto($spamDto)->findSpam();
             $spamDto->setEntities($entity);
             if (!$spamDto->getId() && count($entity)) {

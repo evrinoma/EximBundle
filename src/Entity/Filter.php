@@ -1,4 +1,5 @@
 <?php
+
 namespace Evrinoma\EximBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -6,6 +7,7 @@ use Evrinoma\UtilsBundle\Entity\ActiveInterface;
 use Evrinoma\UtilsBundle\Entity\ActiveTrait;
 use Evrinoma\UtilsBundle\Entity\IdTrait;
 use JMS\Serializer\Annotation\SerializedName;
+
 /**
  * Class Spam
  *
@@ -17,9 +19,10 @@ class Filter implements ActiveInterface
 {
     use IdTrait, ActiveTrait;
 
-    public const FILTER_BURN = 'burn';
-    public const FILTER_IP = 'ip';
 //region SECTION: Fields
+    public const PATTERN_BURN  = 'burn';
+    public const PATTERN_IP    = 'ip';
+    public const PATTERN_EMPTY = '';
     /**
      * @var int
      *
@@ -43,34 +46,8 @@ class Filter implements ActiveInterface
      *
      * @ORM\Column(name="pattern", type="string")
      */
-    private $pattern = '';
+    private $pattern = self::PATTERN_EMPTY;
 //endregion Fields
-
-//region SECTION: Public
-    /**
-     * @return bool
-     */
-    public function isPatternBurn(): bool
-    {
-        return $this->pattern === self::FILTER_BURN;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPatternIP(): bool
-    {
-        return $this->pattern === self::FILTER_IP;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPattern(): bool
-    {
-        return $this->pattern === '';
-    }
-//endregion Public
 
 //region SECTION: Getters/Setters
     /**
