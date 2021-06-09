@@ -51,16 +51,16 @@ final class ServerManager extends AbstractEntityManager implements ServerManager
             }
             $existServer = $this->repository->matching($criteria);
             if (!$serverDto->getId() && $existServer->count() >= 1) {
-                $this->setRestServerErrorUnknownError();
+                $this->setRestUnknownError();
             } else {
                 if ($existServer->count() > 1) {
-                    $this->setRestServerErrorUnknownError();
+                    $this->setRestUnknownError();
                 } else {
                     $entity = $this->save($serverDto, $existServer->count() ? $existServer->first() : new Server());
                 }
             }
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $entity;
@@ -96,7 +96,7 @@ final class ServerManager extends AbstractEntityManager implements ServerManager
 
             $this->setData($value->count() ? $value->toArray() : null);
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $this;

@@ -76,19 +76,19 @@ class AclManager extends AbstractEntityManager implements AclManagerInterface
             }
 
             if ($recordExist) {
-                $this->setRestClientErrorBadRequest();
+                $this->setRestBadRequest();
                 $entity = 'уже существует';
             } else {
                 $aclDto->getDomain()->setEntities($this->domainManager->get($aclDto->getDomain())->getData());
                 if ($aclDto->getDomain()->hasSingleEntity()) {
                     $entity = $this->save($aclDto, count($entity) ? reset($entity) : new Acl());
                 } else {
-                    $this->setRestClientErrorBadRequest();
+                    $this->setRestBadRequest();
                     $entity = 'нет домена или их несколько';
                 }
             }
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
             $entity = 'нет входных данных';
         }
 
@@ -108,7 +108,7 @@ class AclManager extends AbstractEntityManager implements AclManagerInterface
         if ($aclDto) {
             $this->setData($this->repository->setDto($aclDto)->findAcl());
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $this;

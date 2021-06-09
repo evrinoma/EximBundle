@@ -134,7 +134,7 @@ final class EximApiController extends AbstractApiController
     {
         $aclDto = $this->factoryDto->setRequest($this->request)->createDto(AclDto::class);
 
-        return $this->json($this->aclManager->setRestSuccessOk()->get($aclDto)->getData(), $this->aclManager->getRestStatus());
+        return $this->json($this->aclManager->setRestOk()->get($aclDto)->getData(), $this->aclManager->getRestStatus());
     }
 
     /**
@@ -147,7 +147,7 @@ final class EximApiController extends AbstractApiController
      */
     public function aclModelAction()
     {
-        return $this->json($this->aclManager->setRestSuccessOk()->getModel()->toModel(), $this->aclManager->getRestStatus());
+        return $this->json($this->aclManager->setRestOk()->getModel()->toModel(), $this->aclManager->getRestStatus());
     }
 
     /**
@@ -206,7 +206,7 @@ final class EximApiController extends AbstractApiController
     {
         $aclDto = $this->factoryDto->setRequest($this->request)->createDto(AclDto::class);
 
-        return $this->json($this->aclManager->setRestSuccessOk()->toSave($aclDto), $this->aclManager->getRestStatus());
+        return $this->json($this->aclManager->setRestOk()->toSave($aclDto), $this->aclManager->getRestStatus());
     }
 
     /**
@@ -241,7 +241,7 @@ final class EximApiController extends AbstractApiController
     {
         $domainDto = $this->factoryDto->setRequest($this->request)->createDto(DomainDto::class);
 
-        return $this->json($this->domainManager->setRestSuccessOk()->get($domainDto)->getData(), $this->domainManager->getRestStatus());
+        return $this->json($this->domainManager->setRestOk()->get($domainDto)->getData(), $this->domainManager->getRestStatus());
     }
 
     /**
@@ -298,7 +298,7 @@ final class EximApiController extends AbstractApiController
         $domainDto = $this->factoryDto->setRequest($this->request)->createDto(DomainDto::class);
         $this->domainManager->get($domainDto);
 
-        return $this->json((new AdaptorVuetable($this->domainManager, $domainDto, $this->domainManager->getData()))->toVuetable(), $this->domainManager->setRestSuccessOk()->getRestStatus());
+        return $this->json((new AdaptorVuetable($this->domainManager, $domainDto, $this->domainManager->getData()))->toVuetable(), $this->domainManager->setRestOk()->getRestStatus());
     }
 
     /**
@@ -340,7 +340,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($domainDto, $domainManager) {
-                $domainManager->setRestSuccessOk()->get($domainDto)->lockEntities();
+                $domainManager->setRestOk()->get($domainDto)->lockEntities();
             }
         );
 
@@ -397,7 +397,7 @@ final class EximApiController extends AbstractApiController
         $domainDto = $this->factoryDto->setRequest($this->request)->createDto(DomainDto::class);
 
         return $this->json(
-            ['domains' => $this->domainManager->setRestSuccessOk()->toSave($domainDto)],
+            ['domains' => $this->domainManager->setRestOk()->toSave($domainDto)],
             $this->domainManager->getRestStatus()
         );
     }
@@ -454,7 +454,7 @@ final class EximApiController extends AbstractApiController
 
         return $this->json(
             [
-                'search' => $this->searchManager->setRestSuccessOk()
+                'search' => $this->searchManager->setRestOk()
                     ->setDto($logSearch)
                     ->getSearch()
                     ->getSearchResult(),
@@ -475,7 +475,7 @@ final class EximApiController extends AbstractApiController
     {
         $logSearchDto = $this->factoryDto->setRequest($this->request)->createDto(LogSearchDto::class);
 
-        return $this->json(['settings' => $this->searchManager->setRestSuccessOk()->setDto($logSearchDto)->getSettings(), 'classDto' => LogSearchDto::class], $this->searchManager->getRestStatus());
+        return $this->json(['settings' => $this->searchManager->setRestOk()->setDto($logSearchDto)->getSettings(), 'classDto' => LogSearchDto::class], $this->searchManager->getRestStatus());
     }
 
     /**
@@ -511,7 +511,7 @@ final class EximApiController extends AbstractApiController
     {
         $settingsDto = $this->factoryDto->setRequest($this->request)->createDto(LogSearchDto::class);
 
-        return $this->json(['settings' => $this->searchManager->setRestSuccessOk()->setDto($settingsDto)->saveSettings()], $this->searchManager->getRestStatus());
+        return $this->json(['settings' => $this->searchManager->setRestOk()->setDto($settingsDto)->saveSettings()], $this->searchManager->getRestStatus());
     }
 
 
@@ -547,7 +547,7 @@ final class EximApiController extends AbstractApiController
     {
         $serverDto = $this->factoryDto->setRequest($this->request)->createDto(ServerDto::class);
 
-        return $this->json(['servers' => $this->serverManager->setRestSuccessOk()->get($serverDto)->getData()], $this->serverManager->getRestStatus());
+        return $this->json(['servers' => $this->serverManager->setRestOk()->get($serverDto)->getData()], $this->serverManager->getRestStatus());
     }
 
     /**
@@ -594,7 +594,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($serverDto, $serverManager) {
-                $serverManager->setRestSuccessOk()->get($serverDto)->lockEntities();
+                $serverManager->setRestOk()->get($serverDto)->lockEntities();
             }
         );
 
@@ -638,7 +638,7 @@ final class EximApiController extends AbstractApiController
         $serverDto = $this->factoryDto->setRequest($this->request)->createDto(ServerDto::class);
 
         return $this->json(
-            ['servers' => $this->serverManager->setRestSuccessOk()->toSave($serverDto)],
+            ['servers' => $this->serverManager->setRestOk()->toSave($serverDto)],
             $this->serverManager->getRestStatus()
         );
     }
@@ -693,7 +693,7 @@ final class EximApiController extends AbstractApiController
     {
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
-        return $this->json($this->spamManager->setRestSuccessOk()->get($spamDto)->getData(), $this->spamManager->getRestStatus());
+        return $this->json($this->spamManager->setRestOk()->get($spamDto)->getData(), $this->spamManager->getRestStatus());
     }
 
     /**
@@ -707,7 +707,7 @@ final class EximApiController extends AbstractApiController
     {
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
-        return $this->json($this->spamManager->setRestSuccessOk()->getConformity($spamDto)->toModel(), $this->spamManager->getRestStatus());
+        return $this->json($this->spamManager->setRestOk()->getConformity($spamDto)->toModel(), $this->spamManager->getRestStatus());
     }
 
     /**
@@ -721,7 +721,7 @@ final class EximApiController extends AbstractApiController
     {
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
-        return $this->json($this->spamManager->setRestSuccessOk()->getType($spamDto)->getData(), $this->spamManager->getRestStatus());
+        return $this->json($this->spamManager->setRestOk()->getType($spamDto)->getData(), $this->spamManager->getRestStatus());
     }
 
     /**
@@ -772,7 +772,7 @@ final class EximApiController extends AbstractApiController
     {
         $spamDto = $this->factoryDto->setRequest($this->request)->createDto(SpamDto::class);
 
-        return $this->json($this->spamManager->setRestSuccessOk()->toSave($spamDto), $this->spamManager->getRestStatus());
+        return $this->json($this->spamManager->setRestOk()->toSave($spamDto), $this->spamManager->getRestStatus());
     }
 
 
@@ -816,7 +816,7 @@ final class EximApiController extends AbstractApiController
 
         $em->transactional(
             function () use ($spamDto, $spamManager) {
-                $spamManager->setRestSuccessOk()->get($spamDto)->lockEntities();
+                $spamManager->setRestOk()->get($spamDto)->lockEntities();
             }
         );
 

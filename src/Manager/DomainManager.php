@@ -69,13 +69,13 @@ final class DomainManager extends AbstractEntityManager implements DomainManager
                 $domainDto->getServerDto()->setEntities($this->serverManager->get($domainDto->getServerDto())->getData());
             }
             if (!$domainDto->getServerDto()->hasEntities()) {
-                $this->setRestClientErrorBadRequest();
+                $this->setRestBadRequest();
                 $entity = 'сервер не найден';
             } else {
                 $entity = $this->save($domainDto, $existDomain->count() ? $existDomain->first() : new Domain());
             }
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $entity;
@@ -93,7 +93,7 @@ final class DomainManager extends AbstractEntityManager implements DomainManager
         if ($domainDto) {
             $this->setData($this->repository->setDto($domainDto)->findDomain());
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $this;

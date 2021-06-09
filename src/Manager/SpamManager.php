@@ -43,13 +43,13 @@ final class SpamManager extends AbstractEntityManager implements SpamManagerInte
             $entity = $this->repository->setDto($spamDto)->findSpam();
             $spamDto->setEntities($entity);
             if (!$spamDto->getId() && count($entity)) {
-                $this->setRestClientErrorBadRequest();
+                $this->setRestBadRequest();
                 $entity = 'уже существует';
             } else {
                 $entity = $this->save($spamDto, count($entity) ? reset($entity) : new Spam());
             }
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
             $entity = 'нет входных данных';
         }
 
@@ -68,7 +68,7 @@ final class SpamManager extends AbstractEntityManager implements SpamManagerInte
         if ($spamDto) {
             $this->setData($this->repository->setDto($spamDto)->findSpam());
         } else {
-            $this->setRestClientErrorBadRequest();
+            $this->setRestBadRequest();
         }
 
         return $this;
