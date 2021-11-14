@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "evrinoma/dto-bundle": "dev-master",
         "evrinoma/menu-bundle": "dev-master",
         "evrinoma/settings-bundle": "dev-master",
